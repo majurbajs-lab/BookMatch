@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Moje skupine &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-row">
+        <div>
+            <h1>Moje skupine</h1>
+            <p class="page-subtitle">Skupine, katerih član si, in tvoje čakajoče prošnje.</p>
+        </div>
+        <a href="{% url 'groups:create' %}" class="btn btn-accent">+ Ustvari novo</a>
+    </div>
+</div>
+
+{% if memberships %}
+    <h2>Aktivna članstva</h2>
+    <div class="group-grid">
+        {% for m in memberships %}
+            <a href="{% url 'groups:detail' m.group.slug %}" class="group-card">
+                {% if m.group.cover_image %}
+                    <img src="{{ m.group.cover_image.url }}" alt="" class="group-cover">
+                {% else %}
+                    <div class="group-cover group-cover-placeholder">
+                        {% if m.group.genres.all %}{{ m.group.genres.all|first }}{% else %}·{% endif %}
+                    </div>
+                {% endif %}
+                <div class="group-card-info">
+                    <h3>{{ m.group.name }}</h3>
+                    <div class="group-meta">
+                        <span>{{ m.group.member_count }} članov</span>
+                        {% if m.role != 'member' %}
+                            <span class="role-badge">{{ m.get_role_display }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state-large">
+        <div class="empty-icon">—</div>
+        <h3>Še nisi član nobene skupine</h3>
+        <p>Pojdi v katalog skupin in najdi tiste, ki te zanimajo.</p>
+        <a href="{% url 'groups:list' %}" class="btn btn-accent">Odpri seznam skupin</a>
+    </div>
+{% endif %}
+
+{% if pending %}
+    <h2 style="margin-top: 2.5rem;">Čakajoče prošnje</h2>
+    <div class="group-grid">
+        {% for p in pending %}
+            <div class="group-card">
+                <div class="group-cover group-cover-placeholder">·</div>
+                <div class="group-card-info">
+                    <h3>{{ p.group.name }}</h3>
+                    <p class="muted-text">Čaka na odobritev lastnika.</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

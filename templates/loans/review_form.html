@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Oceni izposojo &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="container-narrow">
+    <div class="form-container">
+        <h1 class="form-title">Oceni izposojo</h1>
+        <p class="form-subtitle">
+            Knjiga: <strong>{{ loan_request.offer.book.title }}</strong><br>
+            Uporabnik, ki ga ocenjuješ: <strong>{{ reviewee.username }}</strong>
+        </p>
+
+        <div class="info-box">
+            Tvoja ocena prispeva k profilu zanesljivosti uporabnika. Bodi iskren, a konstruktiven.
+        </div>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.score.id_for_label }}">{{ form.score.label }}</label>
+                {{ form.score }}
+                <span class="helptext">1 = zelo slaba izkušnja, 5 = odlična izkušnja</span>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
+                {{ form.comment }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent">Oddaj oceno</button>
+                <a href="{% url 'loans:my_loans' %}" class="btn btn-ghost">Prekliči</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

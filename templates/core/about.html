@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}O projektu – BookMatch{% endblock %}
+
+{% block content %}
+
+<section class="about-hero">
+    <p class="lp-eyebrow">Projekt UUI 2025/2026</p>
+    <h1 class="lp-headline">BookMatch</h1>
+    <p class="about-lead">Spletna platforma, ki z umetno inteligenco povezuje bralce v aktivno skupnost.</p>
+    <p class="about-school">Srednja tehniška in poklicna šola Trbovlje</p>
+</section>
+
+<div class="about-grid">
+    <div class="about-left">
+        <section class="about-section">
+            <h2>Kaj je BookMatch?</h2>
+            <p>BookMatch je spletna aplikacija, ki bralcem omogoča vodenje bralne evidence, odkrivanje novih knjig in povezovanje z drugimi bralci s podobnim okusom.</p>
+            <p>Projekt je nastal pri predmetu Uvod v umetno inteligenco in združuje moderne spletne tehnologije z algoritmi strojnega učenja.</p>
+        </section>
+
+        <section class="about-section">
+            <h2>Strojno učenje</h2>
+            <div class="about-ml-cards">
+                <div class="about-ml-card">
+                    <div class="about-ml-icon lp-feat-icon-teal">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+                    </div>
+                    <div>
+                        <h4>Content-Based Recommender</h4>
+                        <p>TF-IDF vektorizacija opisov knjig in kosinusna podobnost med knjižnicami uporabnikov. Predlaga knjige, ki ustrezajo tvojemu bralnem okusu.</p>
+                    </div>
+                </div>
+                <div class="about-ml-card">
+                    <div class="about-ml-icon lp-feat-icon-orange">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+                    </div>
+                    <div>
+                        <h4>K-Means Matcher</h4>
+                        <p>Gručenje bralcev v skupine na podlagi žanrskih preferenc. Algoritem poišče bralce in bralne skupine, ki so ti najbližje.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="about-right">
+        <section class="about-section">
+            <h2>Tehnološki sklad</h2>
+            <div class="about-tech-stack">
+                <span class="about-tech-badge about-tech-primary">Python</span>
+                <span class="about-tech-badge about-tech-primary">Django</span>
+                <span class="about-tech-badge about-tech-primary">scikit-learn</span>
+                <span class="about-tech-badge about-tech-secondary">MySQL</span>
+                <span class="about-tech-badge about-tech-secondary">HTML / CSS</span>
+                <span class="about-tech-badge about-tech-secondary">JavaScript</span>
+                <span class="about-tech-badge about-tech-muted">TF-IDF</span>
+                <span class="about-tech-badge about-tech-muted">K-Means</span>
+                <span class="about-tech-badge about-tech-muted">Kosinusna podobnost</span>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2>Funkcionalnosti</h2>
+            <ul class="about-feature-list">
+                <li>Vodenje bralne evidence (prebrano, berem, želim prebrati)</li>
+                <li>Ocenjevanje in recenzije knjig</li>
+                <li>Personalizirana priporočila knjig (ML)</li>
+                <li>Ujemanje bralcev s podobnim okusom (ML)</li>
+                <li>Tematske bralne skupine s klepetem</li>
+                <li>Izposoja knjig med uporabniki</li>
+                <li>Zasebna sporočila med bralci</li>
+            </ul>
+        </section>
+    </div>
+</div>
+
+{% endblock %}

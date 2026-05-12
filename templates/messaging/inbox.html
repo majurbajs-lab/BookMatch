@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Sporočila &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-row">
+        <div>
+            <h1>Sporočila</h1>
+            <p class="page-subtitle">Zasebni pogovori z drugimi bralci.</p>
+        </div>
+    </div>
+</div>
+
+{# ===== NOV POGOVOR ===== #}
+<details class="new-conversation-panel" {% if search_query %}open{% endif %}>
+    <summary class="new-conversation-summary">
+        <span>+ Nov pogovor</span>
+    </summary>
+
+    <form method="get" class="user-search-form">
+        <input type="text" name="user_search" value="{{ search_query }}"
+               placeholder="Vpiši uporabniško ime ..."
+               class="search-input" autocomplete="off">
+        <button type="submit" class="btn btn-primary">Išči</button>
+    </form>
+
+    {% if search_query %}
+        {% if search_results %}
+            <div class="user-search-results">
+                {% for u in search_results %}
+                    <a href="{% url 'messaging:start' u.username %}" class="user-search-item">
+                        {% if u.profile.avatar %}
+                            <img src="{{ u.profile.avatar.url }}" alt="" class="member-avatar">
+                        {% else %}
+                            <div class="member-avatar member-avatar-placeholder">{{ u.username|first|upper }}</div>
+                        {% endif %}
+                        <div class="member-info">
+                            <div class="member-name">{{ u.username }}</div>
+                            {% if u.profile.region %}
+                                <div class="muted-small">{{ u.profile.get_region_display }}</div>
+                            {% endif %}
+                        </div>
+                        <span class="btn btn-ghost btn-small">Odpri pogovor</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="muted-text" style="text-align:center; padding: 1rem;">
+                Ni najdenih uporabnikov z imenom »{{ search_query }}«.
+            </p>
+        {% endif %}
+    {% endif %}
+</details>
+
+{# ===== SEZNAM POGOVOROV ===== #}
+{% if conversation_data %}
+    <div class="conversations-list">
+        {% for item in conversation_data %}
+            <a href="{% url 'messaging:detail' item.conversation.id %}"
+               class="conversation-item {% if item.unread_count %}conversation-unread{% endif %}">
+                {% if item.other.profile.avatar %}
+                    <img src="{{ item.other.profile.avatar.url }}" alt="" class="conv-avatar">
+                {% else %}
+                    <div class="conv-avatar conv-avatar-placeholder">{{ item.other.username|first|upper }}</div>
+                {% endif %}
+
+                <div class="conv-main">
+                    <div class="conv-header">
+                        <div class="conv-name">{{ item.other.username }}</div>
+                        {% if item.last_message %}
+                            <div class="conv-time">{{ item.last_message.created_at|date:"j. n." }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="conv-preview">
+                        {% if item.last_message %}
+                            {% if item.last_message.kind == 'system' %}
+                                <em class="muted-text">{{ item.last_message.content|truncatechars:80 }}</em>
+                            {% else %}
+                                {% if item.last_message.sender == user %}<span class="muted-small">Ti: </span>{% endif %}
+                                {{ item.last_message.content|truncatechars:80 }}
+                            {% endif %}
+                        {% else %}
+                            <em class="muted-text">Pogovor je prazen.</em>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if item.unread_count %}
+                    <span class="unread-badge-big">
+                        {% if item.unread_count > 9 %}9+{% else %}{{ item.unread_count }}{% endif %}
+                    </span>
+                {% endif %}
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state-large">
+        <div class="empty-icon">—</div>
+        <h3>Še nimaš pogovorov</h3>
+        <p>Začni pogovor iz profila drugega uporabnika ali iz »Bralci zate«.</p>
+        <a href="{% url 'matching:readers_for_you' %}" class="btn btn-accent">Poglej bralce zate</a>
+    </div>
+{% endif %}
+{% endblock %}

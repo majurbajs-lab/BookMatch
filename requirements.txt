@@ -1,0 +1,9 @@
+Django==5.0.6
+mysqlclient==2.2.4
+Pillow==10.3.0
+python-decouple==3.8
+
+# Strojno učenje (Faza 3)
+scikit-learn==1.4.2
+numpy==1.26.4
+joblib==1.4.2

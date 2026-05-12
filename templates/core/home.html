@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}BookMatch – Poveži se skozi knjige{% endblock %}
+
+{% block content %}
+{% if not user.is_authenticated %}
+
+    <!-- HERO -->
+    <section class="lp-hero">
+        <div class="lp-hero-left">
+            <p class="lp-eyebrow">Skupnost bralcev</p>
+            <h1 class="lp-headline">Poveži se z bralci,<br>ki ljubijo iste knjige.</h1>
+            <p class="lp-subtext">Sledi svojemu branju, prejemaj pametna priporočila in si izmenjuj knjige z drugimi.</p>
+            <div class="lp-actions">
+                <a href="{% url 'accounts:register' %}" class="btn btn-accent btn-large">Začni brezplačno</a>
+                <a href="{% url 'accounts:login' %}" class="lp-link-ghost">Že imaš račun? Prijava →</a>
+            </div>
+        </div>
+
+        <div class="lp-hero-right">
+            <div class="lp-preview-card">
+                <div class="lp-preview-header">
+                    <span class="lp-dot"></span>
+                    <span class="lp-dot"></span>
+                    <span class="lp-dot"></span>
+                    <span class="lp-preview-label">Moja knjižnica</span>
+                </div>
+                <div class="lp-preview-body">
+                    <div class="lp-preview-books">
+                        <div class="lp-preview-book cover-genre-fantazija">
+                            <span class="lp-bk-author">Tolkien</span>
+                            <span class="lp-bk-title">Gospodar prstanov</span>
+                        </div>
+                        <div class="lp-preview-book cover-genre-krimi">
+                            <span class="lp-bk-author">Agatha Christie</span>
+                            <span class="lp-bk-title">10 malih zamorčkov</span>
+                        </div>
+                        <div class="lp-preview-book cover-genre-distopija">
+                            <span class="lp-bk-author">George Orwell</span>
+                            <span class="lp-bk-title">1984</span>
+                        </div>
+                        <div class="lp-preview-book cover-genre-romanca">
+                            <span class="lp-bk-author">Jane Austen</span>
+                            <span class="lp-bk-title">Ponos in predsodek</span>
+                        </div>
+                        <div class="lp-preview-book cover-genre-grozljivka">
+                            <span class="lp-bk-author">Stephen King</span>
+                            <span class="lp-bk-title">To</span>
+                        </div>
+                        <div class="lp-preview-book cover-genre-filozofija">
+                            <span class="lp-bk-author">Platon</span>
+                            <span class="lp-bk-title">Država</span>
+                        </div>
+                        <div class="lp-preview-book cover-genre-klasika">
+                            <span class="lp-bk-author">Dostojevski</span>
+                            <span class="lp-bk-title">Zločin in kazen</span>
+                        </div>
+                        <div class="lp-preview-book cover-genre-detektivka">
+                            <span class="lp-bk-author">Conan Doyle</span>
+                            <span class="lp-bk-title">Sherlock Holmes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS BAR -->
+    <div class="lp-stats-bar">
+        <div class="lp-stat-item">
+            <span class="lp-stat-num">{{ book_count }}</span>
+            <span class="lp-stat-label">knjig v katalogu</span>
+        </div>
+        <div class="lp-stat-divider"></div>
+        <div class="lp-stat-item">
+            <span class="lp-stat-num">{{ user_count }}</span>
+            <span class="lp-stat-label">registriranih bralcev</span>
+        </div>
+        <div class="lp-stat-divider"></div>
+        <div class="lp-stat-item">
+            <span class="lp-stat-num">{{ group_count }}</span>
+            <span class="lp-stat-label">bralnih skupin</span>
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section class="lp-features-grid">
+        <div class="lp-feat">
+            <div class="lp-feat-icon lp-feat-icon-teal">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" /></svg>
+            </div>
+            <h3>Moja knjižnica</h3>
+            <p>Zabeleži, katere knjige si prebral, kaj bereš in kaj bi rad prebral.</p>
+        </div>
+        <div class="lp-feat">
+            <div class="lp-feat-icon lp-feat-icon-orange">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+            </div>
+            <h3>Pametna priporočila</h3>
+            <p>Algoritem strojnega učenja predlaga knjige na podlagi tvojega branja.</p>
+        </div>
+        <div class="lp-feat">
+            <div class="lp-feat-icon lp-feat-icon-teal">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+            </div>
+            <h3>Poveži se z bralci</h3>
+            <p>Najdi bralce s podobnim okusom in se pridruži tematskim skupinam.</p>
+        </div>
+        <div class="lp-feat">
+            <div class="lp-feat-icon lp-feat-icon-orange">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>
+            </div>
+            <h3>Izposojaj in posojaj</h3>
+            <p>Naj tvoje knjige krožijo. Izposodi si od drugih ali posodi svoje.</p>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="lp-how">
+        <p class="lp-section-label">Kako deluje</p>
+        <h2 class="lp-section-title">Trije koraki do boljšega branja.</h2>
+        <p class="lp-section-sub">Registracija je brezplačna in traja manj kot minuto.</p>
+        <div class="lp-steps">
+            <div class="lp-step">
+                <div class="lp-step-num">01</div>
+                <h3>Registriraj se</h3>
+                <p>Ustvari brezplačen račun in nastavi bralni profil z žanri, ki so ti blizu.</p>
+            </div>
+            <div class="lp-step">
+                <div class="lp-step-num">02</div>
+                <h3>Dodaj knjige</h3>
+                <p>Označi knjige, ki si jih prebral, oceni vsako in gradaj svojo knjižnico.</p>
+            </div>
+            <div class="lp-step">
+                <div class="lp-step-num">03</div>
+                <h3>Odkrij skupnost</h3>
+                <p>Poveži se z bralci, prejemaj priporočila in si izmenjuj fizične knjige.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOTTOM CTA -->
+    <section class="lp-bottom-cta">
+        <h2>Pripravljeni začeti?</h2>
+        <p>Brezplačno. Za vselej.</p>
+        <a href="{% url 'accounts:register' %}" class="btn btn-accent btn-large">Ustvari račun</a>
+    </section>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="book-detail">
+    <div class="book-detail-left">
+        {% if book.cover_image %}
+            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-detail-cover">
+        {% else %}
+            {% with g=book.genres.all|first %}
+            <div class="book-detail-cover book-cover-placeholder-large{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ book.title }}</div>
+            {% endwith %}
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <div class="book-actions">
+                <h3 class="actions-title">Bralna evidenca</h3>
+
+                <form method="post" action="{% url 'reading:set_status' book.id %}" class="status-form">
+                    {% csrf_token %}
+                    <div class="status-buttons">
+                        <button type="submit" name="status" value="want" class="btn btn-status {% if user_entry.status == 'want' %}active{% endif %}">Želim brati</button>
+                        <button type="submit" name="status" value="reading" class="btn btn-status {% if user_entry.status == 'reading' %}active{% endif %}">Trenutno berem</button>
+                        <button type="submit" name="status" value="read" class="btn btn-status {% if user_entry.status == 'read' %}active{% endif %}">Prebrano</button>
+                        <button type="submit" name="status" value="dropped" class="btn btn-status {% if user_entry.status == 'dropped' %}active{% endif %}">Opustil</button>
+                        {% if user_entry %}
+                            <button type="submit" name="status" value="remove" class="btn btn-ghost">Odstrani iz evidence</button>
+                        {% endif %}
+                    </div>
+                </form>
+
+                <div class="rating-section">
+                    <h4>Tvoja ocena</h4>
+                    {% if user_rating %}
+                        <div class="current-rating">★ {{ user_rating.score }}</div>
+                        <div class="rating-actions">
+                            <a href="{% url 'reading:rate' book.id %}" class="btn btn-outline">Spremeni</a>
+                            <form method="post" action="{% url 'reading:delete_rating' book.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-ghost">Odstrani</button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'reading:rate' book.id %}" class="btn btn-accent btn-block">Oceni knjigo</a>
+                    {% endif %}
+                </div>
+
+                <div class="review-section">
+                    <h4>Tvoja recenzija</h4>
+                    {% if user_review %}
+                        <a href="{% url 'reading:review' book.id %}" class="btn btn-outline btn-block">Uredi recenzijo</a>
+                    {% else %}
+                        <a href="{% url 'reading:review' book.id %}" class="btn btn-outline btn-block">Napiši recenzijo</a>
+                    {% endif %}
+                </div>
+
+                <div class="review-section">
+                    <h4>Domača knjižnica</h4>
+                    {% if user_home_book %}
+                        <form method="post" action="{% url 'reading:remove_home_book' book.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-ghost btn-block">Odstrani iz knjižnice</button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{% url 'reading:add_home_book' book.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline btn-block">Dodaj v domačo knjižnico</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                <div class="review-section">
+                    <h4>Izposoja</h4>
+                    <a href="{% url 'loans:offer_create' book.id %}" class="btn btn-outline btn-block">Ponudi za izposojo</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="book-actions">
+                <p style="text-align:center;">Za akcije se <a href="{% url 'accounts:login' %}">prijavi</a>.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="book-detail-right">
+        <h1>{{ book.title }}</h1>
+        <div class="book-authors-large">{{ book.authors_list }}</div>
+
+        <div class="book-rating-display">
+            {% if book.ratings_count %}
+                <span class="rating-stars">★ {{ book.average_rating|floatformat:1 }}</span>
+                <span class="rating-meta">iz 5 &middot; {{ book.ratings_count }} ocen{{ book.ratings_count|pluralize:"a,e" }}</span>
+            {% else %}
+                <span class="rating-meta">Še ni ocen</span>
+            {% endif %}
+        </div>
+
+        <div class="book-metadata">
+            {% if book.genres.all %}
+                <div class="genre-tags">
+                    {% for genre in book.genres.all %}
+                        <a href="{% url 'books:catalog' %}?genre={{ genre.slug }}" class="genre-tag">{{ genre.name }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <dl class="book-meta-list">
+                {% if book.publication_year %}<dt>Leto izdaje</dt><dd>{{ book.publication_year }}</dd>{% endif %}
+                {% if book.publisher %}<dt>Založba</dt><dd>{{ book.publisher }}</dd>{% endif %}
+                {% if book.page_count %}<dt>Število strani</dt><dd>{{ book.page_count }}</dd>{% endif %}
+                {% if book.language %}<dt>Jezik</dt><dd>{{ book.get_language_display }}</dd>{% endif %}
+                {% if book.isbn %}<dt>ISBN</dt><dd>{{ book.isbn }}</dd>{% endif %}
+            </dl>
+        </div>
+
+        {% if book.description %}
+            <div class="book-description">
+                <h2>Opis</h2>
+                <p>{{ book.description|linebreaksbr }}</p>
+            </div>
+        {% endif %}
+
+        {# ===== AKTIVNE PONUDBE ZA IZPOSOJO ===== #}
+        {% with offers=book.loan_offers.all %}
+            {% if offers %}
+                <div class="book-loans">
+                    <h2>Na voljo za izposojo</h2>
+                    <div class="loan-offers-list">
+                        {% for offer in offers %}
+                            {% if offer.status == 'available' %}
+                                <a href="{% url 'loans:offer_detail' offer.id %}" class="loan-offer-item">
+                                    <div class="loan-owner">
+                                        <strong>{{ offer.owner.username }}</strong>
+                                        {% if offer.owner.profile.region %}
+                                            <span class="muted-small">{{ offer.owner.profile.get_region_display }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <span class="condition-badge condition-{{ offer.condition }}">{{ offer.get_condition_display }}</span>
+                                        <span class="muted-small">{{ offer.max_loan_days }} dni</span>
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="book-reviews">
+            <h2>Recenzije</h2>
+            {% with reviews=book.reviews.all %}
+                {% if reviews %}
+                    {% for review in reviews %}
+                        <div class="review-item">
+                            <div class="review-header">
+                                <a href="{% url 'accounts:profile_view' review.user.username %}" class="review-author">{{ review.user.username }}</a>
+                                <span class="review-date">{{ review.created_at|date:"j. n. Y" }}</span>
+                            </div>
+                            <p class="review-content">{{ review.content|linebreaksbr }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">Še ni recenzij. Bodi prvi!</div>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
+{% endblock %}

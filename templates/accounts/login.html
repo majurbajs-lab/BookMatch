@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Prijava &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="container-narrow">
+    <div class="form-container">
+        <h1 class="form-title">Prijava</h1>
+        <p class="form-subtitle">Dobrodošel nazaj.</p>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Uporabniško ime</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Geslo</label>
+                <div style="position: relative;">
+                    {{ form.password }}
+                    <button type="button" onclick="togglePassword()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--color-text-muted); font-size: 0.75rem; letter-spacing: 0.05em;">
+                        Prikaži
+                    </button>
+                </div>
+                {% if form.password.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.password.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="message error">
+                    {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-block">Prijava</button>
+            </div>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem; color: var(--color-text-muted);">
+            Še nimaš računa? <a href="{% url 'accounts:register' %}">Registracija</a>
+        </p>
+    </div>
+</div>
+
+<script>
+function togglePassword() {
+    const field = document.getElementById('{{ form.password.id_for_label }}');
+    const btn = document.querySelector('button[onclick="togglePassword()"]');
+    if (field.type === 'password') {
+        field.type = 'text';
+        btn.textContent = 'Skrij';
+    } else {
+        field.type = 'password';
+        btn.textContent = 'Prikaži';
+    }
+}
+</script>
+{% endblock %}

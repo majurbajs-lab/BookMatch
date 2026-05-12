@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if is_edit %}Uredi skupino{% else %}Nova skupina{% endif %} &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="container-narrow">
+    <div class="form-container">
+        <h1 class="form-title">
+            {% if is_edit %}Uredi skupino{% else %}Ustvari novo skupino{% endif %}
+        </h1>
+        <p class="form-subtitle">
+            {% if is_edit %}Posodobi podatke o svoji skupini.{% else %}Povezuj bralce s podobnimi interesi.{% endif %}
+        </p>
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <ul class="errorlist">{% for e in form.name.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                {{ form.description }}
+                <span class="helptext">Povej drugim, o čem se pogovarjate v skupini.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.region.id_for_label }}">{{ form.region.label }}</label>
+                {{ form.region }}
+                <span class="helptext">Izberi »Vse regije«, če skupina ni vezana na konkretno regijo. Izberi regijo samo, če je skupina namenjena bralcem iz določenega dela Slovenije.</span>
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.genres.label }}</label>
+                <div class="checkbox-grid">
+                    {% for checkbox in form.genres %}
+                        <label class="checkbox-item">
+                            {{ checkbox.tag }}
+                            <span>{{ checkbox.choice_label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <span class="helptext">Te zvrsti bodo uporabljene pri ujemanju skupine z uporabniki.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.visibility.id_for_label }}">{{ form.visibility.label }}</label>
+                {{ form.visibility }}
+                <span class="helptext">Javna: vsi se lahko pridružijo. Zasebna: lastnik mora odobriti.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.cover_image.id_for_label }}">{{ form.cover_image.label }}</label>
+                {{ form.cover_image }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent">
+                    {% if is_edit %}Shrani spremembe{% else %}Ustvari skupino{% endif %}
+                </button>
+                <a href="{% if is_edit %}{% url 'groups:detail' group.slug %}{% else %}{% url 'groups:list' %}{% endif %}" class="btn btn-ghost">Prekliči</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

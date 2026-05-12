@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if is_edit %}Uredi ponudbo{% else %}Ponudi za izposojo{% endif %} &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="container-narrow">
+    <div class="form-container">
+        <h1 class="form-title">
+            {% if is_edit %}Uredi ponudbo za izposojo{% else %}Ponudi knjigo za izposojo{% endif %}
+        </h1>
+        <p class="form-subtitle">
+            <strong>{{ book.title }}</strong> &middot; <em>{{ book.authors_list }}</em>
+        </p>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.condition.id_for_label }}">{{ form.condition.label }}</label>
+                {{ form.condition }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.max_loan_days.id_for_label }}">{{ form.max_loan_days.label }}</label>
+                {{ form.max_loan_days }}
+                <span class="helptext">Koliko dni je lahko izposojena, preden mora biti vrnjena.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.notes.id_for_label }}">{{ form.notes.label }}</label>
+                {{ form.notes }}
+                <span class="helptext">Npr. kje se dobite za prevzem, posebne značilnosti izvoda ...</span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent">
+                    {% if is_edit %}Shrani spremembe{% else %}Objavi ponudbo{% endif %}
+                </button>
+                <a href="{% url 'books:detail' book.id %}" class="btn btn-ghost">Prekliči</a>
+            </div>
+        </form>
+
+        <div class="info-box">
+            Ko uporabnik zaprosi za izposojo, boš dobil obvestilo. Sprejmeš lahko samo eno prošnjo naenkrat.
+        </div>
+    </div>
+</div>
+{% endblock %}

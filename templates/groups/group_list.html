@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Skupine bralcev &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-row">
+        <div>
+            <h1>Skupine bralcev</h1>
+            <p class="page-subtitle">Poveži se z ljudmi, ki berejo podobne knjige.</p>
+        </div>
+        {% if user.is_authenticated %}
+            <a href="{% url 'groups:create' %}" class="btn btn-accent">+ Ustvari skupino</a>
+        {% endif %}
+    </div>
+</div>
+
+<form method="get" class="catalog-filters">
+    <div class="search-bar">
+        <input type="text" name="q" value="{{ query }}" placeholder="Ime ali opis skupine ..." class="search-input">
+        <button type="submit" class="btn btn-primary">Išči</button>
+    </div>
+
+    <div class="filter-row">
+        <div class="filter-group">
+            <label>Zvrst</label>
+            <select name="genre" onchange="this.form.submit()">
+                <option value="">Vse zvrsti</option>
+                {% for g in genres %}
+                    <option value="{{ g.slug }}" {% if selected_genre == g.slug %}selected{% endif %}>{{ g.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Regija</label>
+            <select name="region" onchange="this.form.submit()">
+                <option value="">Vse regije</option>
+                {% for code, label in regions %}
+                    <option value="{{ code }}" {% if selected_region == code %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Razvrsti po</label>
+            <select name="sort" onchange="this.form.submit()">
+                <option value="popular" {% if selected_sort == 'popular' %}selected{% endif %}>Priljubljenosti</option>
+                <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Najnovejše</option>
+                <option value="name" {% if selected_sort == 'name' %}selected{% endif %}>Imenu</option>
+            </select>
+        </div>
+
+        {% if query or selected_genre or selected_region %}
+            <a href="{% url 'groups:list' %}" class="btn btn-ghost">Počisti</a>
+        {% endif %}
+    </div>
+</form>
+
+<div class="results-info">
+    Najdenih skupin: <strong>{{ page_obj.paginator.count }}</strong>
+</div>
+
+{% if page_obj.object_list %}
+    <div class="group-grid">
+        {% for group in page_obj %}
+            <a href="{% url 'groups:detail' group.slug %}" class="group-card">
+                {% if group.cover_image %}
+                    <img src="{{ group.cover_image.url }}" alt="{{ group.name }}" class="group-cover">
+                {% else %}
+                    <div class="group-cover group-cover-placeholder">
+                        {% if group.genres.all %}{{ group.genres.all|first }}{% else %}·{% endif %}
+                    </div>
+                {% endif %}
+                <div class="group-card-info">
+                    <h3>{{ group.name }}</h3>
+                    {% if group.description %}
+                        <p class="group-desc">{{ group.description|truncatewords:18 }}</p>
+                    {% endif %}
+                    <div class="group-meta">
+                        <span>{{ group.members_count }} članov</span>
+                        {% if group.is_regional %}
+                            <span class="region-badge">{{ group.region_label }}</span>
+                        {% endif %}
+                        <span class="visibility-badge visibility-{{ group.visibility }}">{{ group.get_visibility_display }}</span>
+                    </div>
+                    {% if group.genres.all %}
+                        <div class="genre-tags-small">
+                            {% for g in group.genres.all|slice:":3" %}<span class="genre-tag">{{ g.name }}</span>{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?{% if query %}q={{ query }}&{% endif %}{% if selected_genre %}genre={{ selected_genre }}&{% endif %}{% if selected_region %}region={{ selected_region }}&{% endif %}sort={{ selected_sort }}&page={{ page_obj.previous_page_number }}" class="btn btn-outline">&laquo; Prejšnja</a>
+            {% endif %}
+            <span class="page-info">Stran {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?{% if query %}q={{ query }}&{% endif %}{% if selected_genre %}genre={{ selected_genre }}&{% endif %}{% if selected_region %}region={{ selected_region }}&{% endif %}sort={{ selected_sort }}&page={{ page_obj.next_page_number }}" class="btn btn-outline">Naslednja &raquo;</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% else %}
+    <div class="empty-state-large">
+        <div class="empty-icon">—</div>
+        <h3>Ni najdenih skupin</h3>
+        <p>Poskusi z drugimi filtri ali ustvari novo skupino.</p>
+    </div>
+{% endif %}
+{% endblock %}

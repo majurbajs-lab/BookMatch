@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Za vas &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Za vas</h1>
+    <p class="page-subtitle">Knjige, ki bi ti lahko bile všeč, izbrane s pomočjo strojnega učenja.</p>
+</div>
+
+{% if needs_more_ratings %}
+    <div class="info-card">
+        <div class="info-card-icon">◆</div>
+        <div class="info-card-content">
+            <h3>Potrebujemo še malo podatkov</h3>
+            <p>Da ti lahko predlagamo knjige, potrebujemo vsaj <strong>3 ocene</strong>. Trenutno imaš <strong>{{ user_rating_count }}</strong>.</p>
+            <a href="{% url 'books:catalog' %}" class="btn btn-accent">Odpri katalog</a>
+        </div>
+    </div>
+
+{% elif not recommendations %}
+    <div class="info-card">
+        <div class="info-card-icon">◆</div>
+        <div class="info-card-content">
+            <h3>Priporočila še niso pripravljena</h3>
+            <p>Administrator mora pognati ukaz za treniranje modela:</p>
+            <pre style="background: var(--color-bg-light); padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.875rem;">python manage.py train_recommender</pre>
+        </div>
+    </div>
+
+{% else %}
+
+    {% if recommendations_outdated %}
+        <div class="message info">
+            Dodal si nove ocene. Administrator lahko osveži priporočila z <code>python manage.py train_recommender</code>.
+        </div>
+    {% endif %}
+
+    {# Isti stil kot katalog: book-grid z book-card #}
+    <div class="book-grid">
+        {% for rec in recommendations %}
+            <a href="{% url 'books:detail' rec.book.id %}" class="book-card with-match-badge">
+                {% widthratio rec.score 1 100 as match_percent %}
+                <span class="card-match-badge" title="Podobnost: {{ rec.score }}">{{ match_percent }}%</span>
+
+                {% if rec.book.cover_image %}
+                    <img src="{{ rec.book.cover_image.url }}" alt="{{ rec.book.title }}" class="book-cover">
+                {% else %}
+                    {% with g=rec.book.genres.all|first %}
+                    <div class="book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ rec.book.title }}</div>
+                    {% endwith %}
+                {% endif %}
+                <div class="book-card-info">
+                    <div class="book-card-title">{{ rec.book.title }}</div>
+                    <div class="book-card-author">{{ rec.book.authors_list }}</div>
+                    {% if rec.book.average_rating %}
+                        <div class="book-card-rating">
+                            <div class="star-rating">
+                                <span class="stars-wrapper">
+                                    <span class="stars-bg">★★★★★</span>
+                                    <span class="stars-fg" style="width:{% widthratio rec.book.average_rating 5 100 %}%">★★★★★</span>
+                                </span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="book-card-reason">{{ rec.reason|truncatewords:12 }}</div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="rec-footer">
+        <p class="muted-text">
+            Priporočila temeljijo na vsebinski podobnosti knjig. Model: TF-IDF + kosinusna podobnost (scikit-learn).
+        </p>
+    </div>
+
+{% endif %}
+{% endblock %}

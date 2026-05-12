@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Uredi profil &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="container-narrow">
+    <div class="form-container">
+        <h1 class="form-title">Uredi profil</h1>
+        <p class="form-subtitle">Posodobi svoje podatke in nastavitve zasebnosti.</p>
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <h3 class="form-section-title">Osnovni podatki</h3>
+
+            {% for field in user_form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <h3 class="form-section-title">Profil</h3>
+
+            {% for field in profile_form %}
+                <div class="form-group {% if field.name == 'is_public' or field.name == 'show_in_matches' %}form-group-checkbox{% endif %}">
+                    {% if field.name == 'is_public' or field.name == 'show_in_matches' %}
+                        <label class="checkbox-item">
+                            {{ field }}
+                            <span>{{ field.label }}</span>
+                        </label>
+                    {% else %}
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    {% endif %}
+                    {% if field.help_text %}
+                        <span class="helptext">{{ field.help_text|safe }}</span>
+                    {% endif %}
+                    {% if field.errors %}
+                        <ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent">Shrani spremembe</button>
+                <a href="{% url 'accounts:profile_view_me' %}" class="btn btn-ghost">Prekliči</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

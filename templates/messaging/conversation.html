@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ other.username }} &ndash; Sporočila{% endblock %}
+
+{% block content %}
+<div class="conversation-page">
+    <div class="conversation-header">
+        <a href="{% url 'messaging:inbox' %}" class="btn btn-ghost btn-small">← Nazaj</a>
+
+        <a href="{% url 'accounts:profile_view' other.username %}" class="conv-partner">
+            {% if other.profile.avatar %}
+                <img src="{{ other.profile.avatar.url }}" alt="" class="conv-partner-avatar">
+            {% else %}
+                <div class="conv-partner-avatar conv-avatar-placeholder">{{ other.username|first|upper }}</div>
+            {% endif %}
+            <div>
+                <div class="conv-partner-name">{{ other.username }}</div>
+                {% if other.profile.region %}
+                    <div class="muted-small">{{ other.profile.get_region_display }}</div>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+
+    <div class="conversation-body" id="conversation-body">
+        {% if messages_list %}
+            {% for msg in messages_list %}
+                {% if msg.kind == 'system' %}
+                    <div class="chat-system-message">
+                        <span>{{ msg.content }}</span>
+                        <small>{{ msg.created_at|date:"j. n. Y H:i" }}</small>
+                    </div>
+                {% else %}
+                    <div class="chat-bubble {% if msg.sender == user %}chat-bubble-own{% else %}chat-bubble-other{% endif %}">
+                        <div class="chat-bubble-content">{{ msg.content|linebreaksbr }}</div>
+                        <div class="chat-bubble-time">{{ msg.created_at|date:"j. n. Y H:i" }}</div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                Ni še nobenih sporočil. Napiši prvo!
+            </div>
+        {% endif %}
+    </div>
+
+    <form method="post" class="conversation-compose">
+        {% csrf_token %}
+        <textarea name="content" required maxlength="2000" rows="2"
+                  placeholder="Napiši sporočilo ..."
+                  class="compose-textarea"></textarea>
+        <button type="submit" class="btn btn-accent">Pošlji</button>
+    </form>
+</div>
+
+<script>
+    // Samodejno pomakni vsebino na dno ob nalaganju
+    window.addEventListener('DOMContentLoaded', function() {
+        var body = document.getElementById('conversation-body');
+        if (body) body.scrollTop = body.scrollHeight;
+    });
+</script>
+{% endblock %}

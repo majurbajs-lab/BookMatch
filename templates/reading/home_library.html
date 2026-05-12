@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if is_own %}Moja knjižnica{% else %}Knjižnica – {{ profile_user.username }}{% endif %} &ndash; BookMatch
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-row">
+        <div>
+            {% if is_own %}
+                <h1>Moja knjižnica</h1>
+                <p class="page-subtitle">Fizične knjige, ki jih imaš doma. Vidne vsem uporabnikom.</p>
+            {% else %}
+                <h1>Knjižnica &ndash; {{ profile_user.username }}</h1>
+                <p class="page-subtitle">Knjige, ki jih {{ profile_user.username }} ima doma.</p>
+            {% endif %}
+        </div>
+        {% if is_own %}
+            <a href="{% url 'books:catalog' %}" class="btn btn-accent">+ Dodaj iz kataloga</a>
+        {% endif %}
+    </div>
+</div>
+
+{% if home_books %}
+    <div class="book-grid">
+        {% for hb in home_books %}
+            <div class="home-book-wrap{% if is_own %} with-dismiss{% endif %}">
+                <a href="{% url 'books:detail' hb.book.id %}" class="book-card">
+                    {% if hb.book.cover_image %}
+                        <img src="{{ hb.book.cover_image.url }}" alt="{{ hb.book.title }}" class="book-cover">
+                    {% else %}
+                        {% with g=hb.book.genres.all|first %}
+                        <div class="book-cover book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ hb.book.title }}</div>
+                        {% endwith %}
+                    {% endif %}
+                    <div class="book-card-info">
+                        <div class="book-card-title">{{ hb.book.title }}</div>
+                        <div class="book-card-author">{{ hb.book.authors_list }}</div>
+                        {% if hb.book.average_rating %}
+                            <div class="book-card-rating">★ {{ hb.book.average_rating|floatformat:1 }}</div>
+                        {% endif %}
+                        {% if not is_own %}
+                            <div class="book-card-btn">Poglej &amp; zaprosi</div>
+                        {% else %}
+                            <div class="book-card-btn">Poglej podrobnosti</div>
+                        {% endif %}
+                    </div>
+                </a>
+                {% if is_own %}
+                    <form method="post" action="{% url 'reading:remove_home_book' hb.book.id %}" class="dismiss-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{% url 'reading:home_library' %}">
+                        <button type="submit" class="dismiss-btn" title="Odstrani">×</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state-large">
+        <div class="empty-icon">—</div>
+        {% if is_own %}
+            <h3>Tvoja knjižnica je prazna</h3>
+            <p>Poišči knjigo v katalogu in na njeni strani klikni »Dodaj v domačo knjižnico«.</p>
+            <a href="{% url 'books:catalog' %}" class="btn btn-accent">Odpri katalog</a>
+        {% else %}
+            <h3>{{ profile_user.username }} nima knjig v domači knjižnici</h3>
+            <p>Ko bo dodal knjige, se bodo prikazale tukaj.</p>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Evidenca branja &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Evidenca branja</h1>
+    <p class="page-subtitle">Tvoja osebna bralna evidenca na enem mestu.</p>
+</div>
+
+{# ===== STATISTIKA ===== #}
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.total_read }}</div>
+        <div class="stat-label">Prebranih</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.total_reading }}</div>
+        <div class="stat-label">Trenutno berem</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.total_want }}</div>
+        <div class="stat-label">Želim brati</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.total_rated }}</div>
+        <div class="stat-label">Ocenjenih</div>
+    </div>
+</div>
+
+{# ===== PO STATUSIH ===== #}
+{% if by_status.reading %}
+    <section class="library-section">
+        <h2>Trenutno berem</h2>
+        <div class="book-grid">
+            {% for entry in by_status.reading %}
+                {% include 'reading/_book_card.html' with entry=entry %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% if by_status.want %}
+    <section class="library-section">
+        <h2>Želim brati</h2>
+        <div class="book-grid">
+            {% for entry in by_status.want %}
+                {% include 'reading/_book_card.html' with entry=entry %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% if by_status.read %}
+    <section class="library-section">
+        <h2>Prebrano</h2>
+        <div class="book-grid">
+            {% for entry in by_status.read %}
+                {% include 'reading/_book_card.html' with entry=entry %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% if by_status.dropped %}
+    <section class="library-section">
+        <h2>Opustil</h2>
+        <div class="book-grid">
+            {% for entry in by_status.dropped %}
+                {% include 'reading/_book_card.html' with entry=entry %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% if not by_status.reading and not by_status.want and not by_status.read and not by_status.dropped %}
+    <div class="empty-state-large">
+        <div class="empty-icon">—</div>
+        <h3>Tvoja knjižnica je prazna</h3>
+        <p>Pojdi v <a href="{% url 'books:catalog' %}">katalog</a> in dodaj svoje prve knjige.</p>
+        <a href="{% url 'books:catalog' %}" class="btn btn-accent">Odpri katalog</a>
+    </div>
+{% endif %}
+{% endblock %}

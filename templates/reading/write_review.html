@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Recenzija: {{ book.title }} &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="container-narrow">
+    <div class="form-container">
+        <h1 class="form-title">{% if existing %}Uredi recenzijo{% else %}Napiši recenzijo{% endif %}</h1>
+        <p class="form-subtitle">{{ book.title }} &middot; <em>{{ book.authors_list }}</em></p>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
+                {{ form.content }}
+                <span class="helptext">Do 5000 znakov.</span>
+                {% if form.content.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent">Shrani recenzijo</button>
+                <a href="{% url 'books:detail' book.id %}" class="btn btn-ghost">Prekliči</a>
+                {% if existing %}
+                    <form method="post" action="{% url 'reading:delete_review' book.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-ghost" onclick="return confirm('Ali res želiš izbrisati svojo recenzijo?');">Izbriši</button>
+                    </form>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

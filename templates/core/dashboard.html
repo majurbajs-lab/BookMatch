@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+
+{% block title %}Domov &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="dashboard-greeting">
+    <h1>Dobrodošel nazaj, {{ user.username }}.</h1>
+    <p class="page-subtitle">Tvoj pregled aktivnosti na BookMatch.</p>
+</div>
+
+{# ===== POZOR: ČAKAJOČE PROŠNJE ===== #}
+{% if pending_requests %}
+    <div class="dashboard-alert">
+        <div class="alert-icon">!</div>
+        <div class="alert-content">
+            <strong>{{ pending_requests|length }} čakajoč{{ pending_requests|length|pluralize:"a,e,ih" }} prošenj{{ pending_requests|length|pluralize:"ja,ji,j" }} za izposojo</strong>
+            <p>Nekdo želi izposoditi tvoje knjige.</p>
+        </div>
+        <a href="{% url 'loans:my_loans' %}" class="btn btn-accent">Poglej prošnje</a>
+    </div>
+{% endif %}
+
+{# ===== STATISTIKA ===== #}
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.read_count }}</div>
+        <div class="stat-label">Prebranih</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.reading_count }}</div>
+        <div class="stat-label">Trenutno berem</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.rating_count }}</div>
+        <div class="stat-label">Ocen</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.active_loans_count }}</div>
+        <div class="stat-label">Aktivnih izposoj</div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    {# ===== GLAVNI STOLPEC ===== #}
+    <div class="dashboard-main">
+
+        {# AKTIVNE IZPOSOJE #}
+        {% if active_loans %}
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>Aktivne izposoje</h2>
+                    <a href="{% url 'loans:my_loans' %}" class="section-link">Vse izposoje →</a>
+                </div>
+                <div class="active-loans-list">
+                    {% for loan in active_loans %}
+                        <div class="active-loan-item">
+                            {% if loan.offer.book.cover_image %}
+                                <img src="{{ loan.offer.book.cover_image.url }}" alt="" class="active-loan-cover">
+                            {% else %}
+                                {% with genre=loan.offer.book.genres.all|first %}
+                                <div class="active-loan-cover book-cover-placeholder{% if genre %} cover-genre-{{ genre.slug }}{% endif %}"></div>
+                                {% endwith %}
+                            {% endif %}
+                            <div class="active-loan-info">
+                                <div class="active-loan-title">{{ loan.offer.book.title }}</div>
+                                <div class="active-loan-meta">
+                                    {% if loan.borrower == user %}
+                                        <span>Izposoja od: <strong>{{ loan.offer.owner.username }}</strong></span>
+                                    {% else %}
+                                        <span>Posodil: <strong>{{ loan.borrower.username }}</strong></span>
+                                    {% endif %}
+                                </div>
+                                {% if loan.loan_end %}
+                                    <div class="active-loan-due">Rok: {{ loan.loan_end|date:"j. n. Y" }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {# AKTIVNI KLEPETI #}
+        <section class="dashboard-section">
+            <div class="section-header">
+                <h2>Aktivni klepeti</h2>
+                {% if total_chats > 5 %}
+                    <a href="{% url 'messaging:inbox' %}" class="section-link">Prikaži vse ({{ total_chats }}) →</a>
+                {% elif total_chats %}
+                    <a href="{% url 'messaging:inbox' %}" class="section-link">Vsi pogovori →</a>
+                {% endif %}
+            </div>
+            {% if active_chats %}
+                <div class="dashboard-chats-list">
+                    {% for item in active_chats %}
+                        <a href="{% url 'messaging:detail' item.conversation.id %}"
+                           class="dashboard-chat-item {% if item.unread_count %}chat-unread{% endif %}">
+                            {% if item.other.profile.avatar %}
+                                <img src="{{ item.other.profile.avatar.url }}" alt="" class="conv-avatar">
+                            {% else %}
+                                <div class="conv-avatar conv-avatar-placeholder">{{ item.other.username|first|upper }}</div>
+                            {% endif %}
+                            <div class="dashboard-chat-main">
+                                <div class="conv-name">{{ item.other.username }}</div>
+                                <div class="conv-preview-small">
+                                    {% if item.last_message %}
+                                        {% if item.last_message.kind == 'system' %}
+                                            <em>{{ item.last_message.content|truncatechars:60 }}</em>
+                                        {% else %}
+                                            {% if item.last_message.sender == user %}Ti: {% endif %}{{ item.last_message.content|truncatechars:60 }}
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if item.unread_count %}
+                                <span class="unread-badge-small">
+                                    {% if item.unread_count > 9 %}9+{% else %}{{ item.unread_count }}{% endif %}
+                                </span>
+                            {% endif %}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    Še nimaš aktivnih pogovorov. Pošlji sporočilo bralcu iz »Bralci zate« ali iz njegovega profila.
+                </div>
+            {% endif %}
+        </section>
+
+        {# MOJE SKUPINE #}
+        <section class="dashboard-section">
+            <div class="section-header">
+                <h2>Moje skupine</h2>
+                {% if total_groups > 6 %}
+                    <a href="{% url 'groups:my_groups' %}" class="section-link">Prikaži vse ({{ total_groups }}) →</a>
+                {% elif total_groups %}
+                    <a href="{% url 'groups:my_groups' %}" class="section-link">Moje skupine →</a>
+                {% else %}
+                    <a href="{% url 'groups:list' %}" class="section-link">Katalog skupin →</a>
+                {% endif %}
+            </div>
+            {% if my_groups %}
+                <div class="dashboard-groups-grid">
+                    {% for m in my_groups %}
+                        <a href="{% url 'groups:detail' m.group.slug %}" class="dashboard-group-card">
+                            <div class="dashboard-group-cover">
+                                {% if m.group.cover_image %}
+                                    <img src="{{ m.group.cover_image.url }}" alt="">
+                                {% else %}
+                                    <div class="group-cover-placeholder">
+                                        {% if m.group.genres.all %}{{ m.group.genres.all|first }}{% else %}·{% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="dashboard-group-info">
+                                <div class="dashboard-group-name">{{ m.group.name }}</div>
+                                <div class="dashboard-group-meta">{{ m.group.member_count }} članov</div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    Še nisi član nobene skupine. <a href="{% url 'groups:list' %}">Odpri katalog skupin</a>.
+                </div>
+            {% endif %}
+        </section>
+    </div>
+
+    {# ===== STRANSKI STOLPEC ===== #}
+    <div class="dashboard-side">
+
+        {# TOP 3 PRIPOROČENE KNJIGE #}
+        <section class="dashboard-section">
+            <div class="section-header">
+                <h2>Zate</h2>
+                <a href="{% url 'recommendations:for_you' %}" class="section-link">Vse →</a>
+            </div>
+            {% if top_recommendations %}
+                <div class="side-list">
+                    {% for rec in top_recommendations %}
+                        <a href="{% url 'books:detail' rec.book.id %}" class="side-book-item">
+                            {% if rec.book.cover_image %}
+                                <img src="{{ rec.book.cover_image.url }}" alt="" class="side-book-cover">
+                            {% else %}
+                                {% with genre=rec.book.genres.all|first %}
+                                <div class="side-book-cover book-cover-placeholder{% if genre %} cover-genre-{{ genre.slug }}{% endif %}"></div>
+                                {% endwith %}
+                            {% endif %}
+                            <div class="side-book-info">
+                                <div class="side-book-title">{{ rec.book.title }}</div>
+                                <div class="side-book-author">{{ rec.book.authors_list|truncatechars:25 }}</div>
+                                {% widthratio rec.score 1 100 as match_percent %}
+                                <span class="match-badge">{{ match_percent }}%</span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="muted-text" style="padding: 0.5rem 0;">
+                    Oceni nekaj knjig za prejem priporočil.
+                </p>
+            {% endif %}
+        </section>
+
+        {# TOP 3 PREDLAGANE SKUPINE #}
+        <section class="dashboard-section">
+            <div class="section-header">
+                <h2>Skupine zate</h2>
+                <a href="{% url 'matching:readers_for_you' %}" class="section-link">Vse →</a>
+            </div>
+            {% if top_group_suggestions %}
+                <div class="side-list">
+                    {% for s in top_group_suggestions %}
+                        <a href="{% url 'groups:detail' s.group.slug %}" class="side-group-item">
+                            {% with genre=s.group.genres.all|first %}
+                            <div class="side-group-icon{% if genre %} cover-genre-{{ genre.slug }}{% endif %}"></div>
+                            {% endwith %}
+                            <div class="side-group-info">
+                                <div class="side-group-name">{{ s.group.name }}</div>
+                                <div class="muted-small">{{ s.group.member_count }} članov</div>
+                                {% widthratio s.match_score 1 100 as match_percent %}
+                                <span class="match-badge">{{ match_percent }}%</span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="muted-text" style="padding: 0.5rem 0;">
+                    Oceni več knjig za prejem predlogov skupin.
+                </p>
+            {% endif %}
+        </section>
+
+    </div>
+</div>
+{% endblock %}

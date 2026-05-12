@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ group.name }} &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="group-detail">
+    {# ===== GLAVA SKUPINE ===== #}
+    <div class="group-header">
+        {% if group.cover_image %}
+            <img src="{{ group.cover_image.url }}" alt="{{ group.name }}" class="group-header-cover">
+        {% else %}
+            <div class="group-header-cover group-cover-placeholder">
+                {% if group.genres.all %}{{ group.genres.all|first }}{% else %}·{% endif %}
+            </div>
+        {% endif %}
+
+        <div class="group-header-info">
+            <h1>{{ group.name }}</h1>
+            <div class="group-meta">
+                <span>{{ group.member_count }} član{{ group.member_count|pluralize:"a,ov,ov" }}</span>
+                <span class="visibility-badge visibility-{{ group.visibility }}">{{ group.get_visibility_display }}</span>
+                {% if group.owner %}
+                    <span>Lastnik: <a href="{% url 'accounts:profile_view' group.owner.username %}">{{ group.owner.username }}</a></span>
+                {% else %}
+                    <span>Sistemska skupina</span>
+                {% endif %}
+            </div>
+
+            {% if group.genres.all %}
+                <div class="genre-tags-small">
+                    {% for g in group.genres.all %}<span class="genre-tag">{{ g.name }}</span>{% endfor %}
+                </div>
+            {% endif %}
+
+            {% if group.description %}
+                <p class="group-description">{{ group.description|linebreaksbr }}</p>
+            {% endif %}
+
+            <div class="group-actions">
+                {% if user.is_authenticated %}
+                    {% if is_member %}
+                        {% if is_owner %}
+                            <a href="{% url 'groups:edit' group.slug %}" class="btn btn-outline">Uredi skupino</a>
+                        {% else %}
+                            <form method="post" action="{% url 'groups:leave' group.slug %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-ghost" onclick="return confirm('Ali res želiš zapustiti skupino?');">Zapusti skupino</button>
+                            </form>
+                        {% endif %}
+                    {% elif has_pending %}
+                        <button class="btn btn-ghost" disabled>Prošnja čaka na odobritev</button>
+                    {% else %}
+                        <form method="post" action="{% url 'groups:join' group.slug %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-accent">
+                                {% if group.visibility == 'private' %}Pošlji prošnjo{% else %}Pridruži se{% endif %}
+                            </button>
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="btn btn-accent">Prijava za pridružitev</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {# ===== ČAKAJOČE PROŠNJE (samo lastnik) ===== #}
+    {% if is_owner and pending_requests %}
+        <div class="pending-requests">
+            <h3>Čakajoče prošnje za pridružitev</h3>
+            {% for pr in pending_requests %}
+                <div class="pending-item">
+                    <span><strong>{{ pr.user.username }}</strong> želi pridružitev</span>
+                    <div class="pending-actions">
+                        <form method="post" action="{% url 'groups:approve' group.slug pr.user.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-small">Odobri</button>
+                        </form>
+                        <form method="post" action="{% url 'groups:reject' group.slug pr.user.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-ghost btn-small">Zavrni</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="group-content-grid">
+        {# ===== KLEPET ===== #}
+        <div class="group-chat">
+            <h2>Pogovor</h2>
+
+            {% if is_member %}
+                {% if messages_list %}
+                    <div class="message-list">
+                        {% for msg in messages_list %}
+                            <div class="chat-message {% if msg.sender == user %}chat-message-own{% endif %}">
+                                <div class="chat-message-header">
+                                    <a href="{% url 'accounts:profile_view' msg.sender.username %}" class="chat-sender">
+                                        {{ msg.sender.username }}
+                                    </a>
+                                    <span class="chat-date">{{ msg.created_at|date:"j. n. Y H:i" }}</span>
+                                </div>
+                                <div class="chat-content">{{ msg.content|linebreaksbr }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        Še ni sporočil. Bodi prvi!
+                    </div>
+                {% endif %}
+
+                <form method="post" class="message-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="send_message" value="1">
+                    {{ message_form.content }}
+                    <button type="submit" class="btn btn-primary">Pošlji</button>
+                </form>
+            {% else %}
+                <div class="empty-state">
+                    Pogovor je viden samo članom.
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'accounts:login' %}">Prijavi se</a> in pridruži skupini.
+                    {% else %}
+                        Pridruži se skupini, da vidiš sporočila.
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# ===== ČLANI ===== #}
+        <div class="group-members">
+            <h2>Člani ({{ group.member_count }})</h2>
+            <div class="members-list">
+                {% for m in active_members %}
+                    <a href="{% url 'accounts:profile_view' m.user.username %}" class="member-item">
+                        {% if m.user.profile.avatar %}
+                            <img src="{{ m.user.profile.avatar.url }}" alt="" class="member-avatar">
+                        {% else %}
+                            <div class="member-avatar member-avatar-placeholder">{{ m.user.username|first|upper }}</div>
+                        {% endif %}
+                        <div class="member-info">
+                            <div class="member-name">{{ m.user.username }}</div>
+                            {% if m.role != 'member' %}
+                                <div class="member-role">{{ m.get_role_display }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            {% if group.member_count > 20 %}
+                <p class="muted-text">... in {{ group.member_count|add:"-20" }} več</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

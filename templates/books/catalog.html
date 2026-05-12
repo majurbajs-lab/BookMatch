@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Katalog knjig &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Katalog knjig</h1>
+    <p class="page-subtitle">Brskaj po zbirki, išči in najdi naslednjo knjigo za branje.</p>
+</div>
+
+{# ===== ISKANJE IN FILTRI ===== #}
+<form method="get" class="catalog-filters">
+    <div class="search-bar">
+        <input type="text" name="q" value="{{ query }}" placeholder="Naslov, avtor ali ISBN ..." class="search-input">
+        <button type="submit" class="btn btn-primary">Išči</button>
+    </div>
+
+    <div class="filter-row">
+        <div class="filter-group">
+            <label>Zvrst</label>
+            <select name="genre" onchange="this.form.submit()">
+                <option value="">Vse zvrsti</option>
+                {% for g in genres %}
+                    <option value="{{ g.slug }}" {% if selected_genre == g.slug %}selected{% endif %}>{{ g.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Jezik</label>
+            <select name="language" onchange="this.form.submit()">
+                <option value="">Vsi jeziki</option>
+                {% for code, label in languages %}
+                    <option value="{{ code }}" {% if selected_language == code %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Razvrsti po</label>
+            <select name="sort" onchange="this.form.submit()">
+                <option value="title" {% if selected_sort == 'title' %}selected{% endif %}>Naslovu (A-Ž)</option>
+                <option value="-title" {% if selected_sort == '-title' %}selected{% endif %}>Naslovu (Ž-A)</option>
+                <option value="rating" {% if selected_sort == 'rating' %}selected{% endif %}>Najvišji oceni</option>
+                <option value="popular" {% if selected_sort == 'popular' %}selected{% endif %}>Priljubljenosti</option>
+                <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Najnovejšim</option>
+                <option value="year" {% if selected_sort == 'year' %}selected{% endif %}>Letu izdaje</option>
+            </select>
+        </div>
+
+        {% if query or selected_genre or selected_language %}
+            <a href="{% url 'books:catalog' %}" class="btn btn-ghost">Počisti filtre</a>
+        {% endif %}
+    </div>
+</form>
+
+{# ===== REZULTATI ===== #}
+<div class="results-info">
+    Najdenih knjig: <strong>{{ page_obj.paginator.count }}</strong>
+    {% if query %}za »<em>{{ query }}</em>«{% endif %}
+</div>
+
+{% if page_obj.object_list %}
+    <div class="book-grid">
+        {% for book in page_obj %}
+            <a href="{% url 'books:detail' book.id %}" class="book-card">
+                {% if book.cover_image %}
+                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover">
+                {% else %}
+                    {% with g=book.genres.all|first %}
+                    <div class="book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ book.title }}</div>
+                    {% endwith %}
+                {% endif %}
+                <div class="book-card-info">
+                    <div class="book-card-title">{{ book.title }}</div>
+                    <div class="book-card-author">{{ book.authors_list }}</div>
+                    {% if book.ratings_count %}
+                        <div class="book-card-rating">
+                            <div class="star-rating">
+                                <span class="stars-wrapper">
+                                    <span class="stars-bg">★★★★★</span>
+                                    <span class="stars-fg" style="width:{% widthratio book.average_rating 5 100 %}%">★★★★★</span>
+                                </span>
+                                <span class="rating-count">({{ book.ratings_count }})</span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="book-card-rating muted">Brez ocen</div>
+                    {% endif %}
+                    <div class="book-card-btn">Poglej podrobnosti</div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    {# ===== STRANJENJE ===== #}
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?{% if query %}q={{ query }}&{% endif %}{% if selected_genre %}genre={{ selected_genre }}&{% endif %}{% if selected_language %}language={{ selected_language }}&{% endif %}sort={{ selected_sort }}&page={{ page_obj.previous_page_number }}" class="btn btn-outline">&laquo; Prejšnja</a>
+            {% endif %}
+
+            <span class="page-info">Stran {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+                <a href="?{% if query %}q={{ query }}&{% endif %}{% if selected_genre %}genre={{ selected_genre }}&{% endif %}{% if selected_language %}language={{ selected_language }}&{% endif %}sort={{ selected_sort }}&page={{ page_obj.next_page_number }}" class="btn btn-outline">Naslednja &raquo;</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+{% else %}
+    <div class="empty-state-large">
+        <div class="empty-icon">—</div>
+        <h3>Nobene knjige ne ustreza tvojemu iskanju</h3>
+        <p>Poskusi z drugimi ključnimi besedami ali počisti filtre.</p>
+    </div>
+{% endif %}
+{% endblock %}

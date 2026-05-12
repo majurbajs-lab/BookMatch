@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil: {{ profile.user.username }} &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="profile-header">
+    {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="Profilna slika" class="profile-avatar">
+    {% else %}
+        <div class="profile-avatar">{{ profile.user.username|first|upper }}</div>
+    {% endif %}
+
+    <div class="profile-info">
+        <h1>
+            {% if profile.user.first_name or profile.user.last_name %}
+                {{ profile.user.first_name }} {{ profile.user.last_name }}
+            {% else %}
+                {{ profile.user.username }}
+            {% endif %}
+        </h1>
+        <div class="profile-username">@{{ profile.user.username }}</div>
+
+        {% if profile.bio %}
+            <p class="profile-bio">{{ profile.bio }}</p>
+        {% elif is_owner %}
+            <p class="profile-bio" style="color: var(--color-text-muted); font-style: italic;">
+                Še nisi dodal biografije. <a href="{% url 'accounts:profile_edit' %}">Dopolni profil.</a>
+            </p>
+        {% endif %}
+
+        <div class="profile-meta">
+            {% if profile.region %}<span>{{ profile.get_region_display }}</span>{% endif %}
+            {% if profile.location %}<span>{{ profile.location }}</span>{% endif %}
+            <span>{{ read_count }} prebranih</span>
+            <span>{{ rating_count }} ocen</span>
+            {% if profile.reliability_count %}
+                <span>{{ profile.reliability_score }}/5 zanesljivost ({{ profile.reliability_count }} ocen)</span>
+            {% endif %}
+            <span>Član od {{ profile.created_at|date:"F Y" }}</span>
+        </div>
+
+        <div class="profile-actions">
+            {% if is_owner %}
+                <a href="{% url 'accounts:profile_edit' %}" class="btn btn-primary">Uredi profil</a>
+                <a href="{% url 'reading:library' %}" class="btn btn-outline">Evidenca branja</a>
+                <a href="{% url 'reading:home_library' %}" class="btn btn-outline">Moja knjižnica</a>
+                <a href="{% url 'loans:my_loans' %}" class="btn btn-outline">Moje izposoje</a>
+            {% else %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'messaging:start' profile.user.username %}" class="btn btn-accent">Pošlji sporočilo</a>
+                {% endif %}
+                <a href="{% url 'reading:user_home_library' profile.user.username %}" class="btn btn-outline">Knjižnica</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="profile-section">
+    <h2>Zadnje prebrane knjige</h2>
+    {% if recent_read %}
+        <div class="book-grid">
+            {% for entry in recent_read %}
+                <a href="{% url 'books:detail' entry.book.id %}" class="book-card-small">
+                    {% if entry.book.cover_image %}
+                        <img src="{{ entry.book.cover_image.url }}" alt="{{ entry.book.title }}">
+                    {% else %}
+                        {% with g=entry.book.genres.all|first %}
+                        <div class="book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ entry.book.title }}</div>
+                        {% endwith %}
+                    {% endif %}
+                    <div class="book-card-info">
+                        <div class="book-card-title">{{ entry.book.title }}</div>
+                        <div class="book-card-author">{{ entry.book.authors_list }}</div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">Še ni prebranih knjig.</div>
+    {% endif %}
+</div>
+
+<div class="profile-section">
+    <h2>Zadnje recenzije</h2>
+    {% if recent_reviews %}
+        {% for review in recent_reviews %}
+            <div class="review-item">
+                <div class="review-book">
+                    <a href="{% url 'books:detail' review.book.id %}">{{ review.book.title }}</a>
+                    <span class="review-date">{{ review.created_at|date:"j. n. Y" }}</span>
+                </div>
+                <p class="review-content">{{ review.content|truncatewords:40 }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">Še ni recenzij.</div>
+    {% endif %}
+</div>
+
+<div class="profile-section">
+    <h2>Knjige na voljo za izposojo</h2>
+    <div class="book-grid">
+        {% for offer in profile.user.loan_offers.all %}
+            {% if offer.status == 'available' %}
+                <a href="{% url 'loans:offer_detail' offer.id %}" class="book-card-small">
+                    {% if offer.book.cover_image %}
+                        <img src="{{ offer.book.cover_image.url }}" alt="">
+                    {% else %}
+                        {% with g=offer.book.genres.all|first %}
+                        <div class="book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ offer.book.title }}</div>
+                        {% endwith %}
+                    {% endif %}
+                    <div class="book-card-info">
+                        <div class="book-card-title">{{ offer.book.title }}</div>
+                        <div class="book-card-author">{{ offer.book.authors_list }}</div>
+                    </div>
+                </a>
+            {% endif %}
+        {% empty %}
+            <div class="empty-state">Ta uporabnik trenutno ne ponuja nobene knjige za izposojo.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{# Delni template: kartica knjige v knjižnici (z oceno, če obstaja) #}
+<a href="{% url 'books:detail' entry.book.id %}" class="book-card">
+    {% if entry.book.cover_image %}
+        <img src="{{ entry.book.cover_image.url }}" alt="{{ entry.book.title }}" class="book-cover">
+    {% else %}
+        {% with g=entry.book.genres.all|first %}
+        <div class="book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ entry.book.title }}</div>
+        {% endwith %}
+    {% endif %}
+    <div class="book-card-info">
+        <div class="book-card-title">{{ entry.book.title }}</div>
+        <div class="book-card-author">{{ entry.book.authors_list }}</div>
+        {% if entry.book.average_rating %}
+            <div class="book-card-rating">
+                <div class="star-rating">
+                    <span class="stars-wrapper">
+                        <span class="stars-bg">★★★★★</span>
+                        <span class="stars-fg" style="width:{% widthratio entry.book.average_rating 5 100 %}%">★★★★★</span>
+                    </span>
+                </div>
+            </div>
+        {% endif %}
+        <div class="book-card-btn">Poglej podrobnosti</div>
+    </div>
+</a>

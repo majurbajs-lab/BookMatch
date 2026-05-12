@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Prošnja za izposojo &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="container-narrow">
+    <div class="form-container">
+        <h1 class="form-title">Zaprosi za izposojo</h1>
+        <p class="form-subtitle">
+            <strong>{{ offer.book.title }}</strong> &middot;
+            lastnik <strong>{{ offer.owner.username }}</strong>
+            {% if offer.owner.profile.region %}
+                ({{ offer.owner.profile.get_region_display }})
+            {% endif %}
+        </p>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+                {{ form.message }}
+                <span class="helptext">Neobvezno – lahko napišeš, zakaj te knjiga zanima ali kdaj bi jo prevzel.</span>
+            </div>
+
+            <div class="info-box">
+                Ko pošlješ prošnjo, se bo lastnik odločil ali jo sprejme. Po sprejemu se lahko dogovorita za prevzem. Največja doba izposoje je <strong>{{ offer.max_loan_days }} dni</strong>.
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-accent">Pošlji prošnjo</button>
+                <a href="{% url 'loans:offer_detail' offer.id %}" class="btn btn-ghost">Prekliči</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

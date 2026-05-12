@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block title %}Moje izposoje &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Moje izposoje</h1>
+    <p class="page-subtitle">Pregled tvojih ponudb, prošenj in zaključenih izposoj.</p>
+</div>
+
+{# ===== PREJETE PROŠNJE (Kot lastnik) ===== #}
+{% if received_requests %}
+    <section class="loan-section">
+        <h2>Prejete prošnje</h2>
+        <div class="loan-requests-list">
+            {% for req in received_requests %}
+                <div class="loan-request-card">
+                    <div class="loan-req-book">
+                        {% if req.offer.book.cover_image %}
+                            <img src="{{ req.offer.book.cover_image.url }}" alt="" class="loan-req-cover">
+                        {% else %}
+                            {% with g=req.offer.book.genres.all|first %}<div class="loan-req-cover book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ req.offer.book.title }}</div>{% endwith %}
+                        {% endif %}
+                    </div>
+                    <div class="loan-req-info">
+                        <h3>{{ req.offer.book.title }}</h3>
+                        <p class="muted-text">
+                            Prosilec:
+                            <a href="{% url 'accounts:profile_view' req.borrower.username %}"><strong>{{ req.borrower.username }}</strong></a>
+                            {% if req.borrower.profile.reliability_count %}
+                                &middot; ★ {{ req.borrower.profile.reliability_score }}
+                            {% endif %}
+                        </p>
+                        {% if req.message %}
+                            <blockquote class="loan-req-message">{{ req.message }}</blockquote>
+                        {% endif %}
+                        <div class="loan-req-status">
+                            <span class="status-badge status-{{ req.status }}">{{ req.get_status_display }}</span>
+                            {% if req.loan_end %}
+                                <span class="muted-small">Vračilo do: {{ req.loan_end|date:"j. n. Y" }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="loan-req-actions">
+                        {% if req.status == 'pending' %}
+                            <form method="post" action="{% url 'loans:request_accept' req.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-accent btn-small">Sprejmi</button>
+                            </form>
+                            <form method="post" action="{% url 'loans:request_reject' req.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-ghost btn-small">Zavrni</button>
+                            </form>
+                        {% elif req.status == 'accepted' %}
+                            <form method="post" action="{% url 'loans:request_return' req.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary btn-small">Knjiga vrnjena</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{# ===== POSLANE PROŠNJE (Kot izposojevalec) ===== #}
+{% if sent_requests %}
+    <section class="loan-section">
+        <h2>Moje prošnje</h2>
+        <div class="loan-requests-list">
+            {% for req in sent_requests %}
+                <div class="loan-request-card">
+                    <div class="loan-req-book">
+                        {% if req.offer.book.cover_image %}
+                            <img src="{{ req.offer.book.cover_image.url }}" alt="" class="loan-req-cover">
+                        {% else %}
+                            {% with g=req.offer.book.genres.all|first %}<div class="loan-req-cover book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ req.offer.book.title }}</div>{% endwith %}
+                        {% endif %}
+                    </div>
+                    <div class="loan-req-info">
+                        <h3>{{ req.offer.book.title }}</h3>
+                        <p class="muted-text">
+                            Lastnik:
+                            <a href="{% url 'accounts:profile_view' req.offer.owner.username %}"><strong>{{ req.offer.owner.username }}</strong></a>
+                        </p>
+                        <div class="loan-req-status">
+                            <span class="status-badge status-{{ req.status }}">{{ req.get_status_display }}</span>
+                            {% if req.loan_end %}
+                                <span class="muted-small">Vračilo do: {{ req.loan_end|date:"j. n. Y" }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="loan-req-actions">
+                        {% if req.status == 'pending' or req.status == 'accepted' %}
+                            <form method="post" action="{% url 'loans:request_cancel' req.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-ghost btn-small">Prekliči</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{# ===== MOJE PONUDBE ===== #}
+<section class="loan-section">
+    <h2>Moje ponudbe za izposojo</h2>
+    {% if my_offers %}
+        <div class="book-grid">
+            {% for offer in my_offers %}
+                <a href="{% url 'loans:offer_detail' offer.id %}" class="book-card">
+                    {% if offer.book.cover_image %}
+                        <img src="{{ offer.book.cover_image.url }}" alt="" class="book-cover">
+                    {% else %}
+                        {% with g=offer.book.genres.all|first %}<div class="book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ offer.book.title }}</div>{% endwith %}
+                    {% endif %}
+                    <div class="book-card-info">
+                        <div class="book-card-title">{{ offer.book.title }}</div>
+                        <div class="book-card-author">{{ offer.book.authors_list }}</div>
+                        <span class="status-badge status-{{ offer.status }}">{{ offer.get_status_display }}</span>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            Še nimaš nobene ponudbe. V katalogu izberi knjigo, ki jo imaš doma in jo ponudi.
+        </div>
+    {% endif %}
+</section>
+
+{# ===== ZAKLJUČENE IZPOSOJE ===== #}
+{% if completed %}
+    <section class="loan-section">
+        <h2>Zaključene izposoje</h2>
+        <div class="loan-requests-list">
+            {% for req in completed %}
+                <div class="loan-request-card">
+                    <div class="loan-req-book">
+                        {% if req.offer.book.cover_image %}
+                            <img src="{{ req.offer.book.cover_image.url }}" alt="" class="loan-req-cover">
+                        {% else %}
+                            {% with g=req.offer.book.genres.all|first %}<div class="loan-req-cover book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ req.offer.book.title }}</div>{% endwith %}
+                        {% endif %}
+                    </div>
+                    <div class="loan-req-info">
+                        <h3>{{ req.offer.book.title }}</h3>
+                        <p class="muted-text">
+                            {% if user == req.borrower %}
+                                Lastnik: <strong>{{ req.offer.owner.username }}</strong>
+                            {% else %}
+                                Prosilec: <strong>{{ req.borrower.username }}</strong>
+                            {% endif %}
+                        </p>
+                        <span class="status-badge status-returned">Vrnjeno</span>
+                    </div>
+                    <div class="loan-req-actions">
+                        {% if req.can_review %}
+                            <a href="{% url 'loans:review' req.id %}" class="btn btn-accent btn-small">Oceni</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% if not my_offers and not sent_requests and not received_requests %}
+    <div class="empty-state-large">
+        <div class="empty-icon">—</div>
+        <h3>Še nimaš izposoj</h3>
+        <p>Odpri katalog in ponudi svojo knjigo, ali poišči zanimivo izposojo drugih bralcev.</p>
+        <div class="hero-actions">
+            <a href="{% url 'loans:browse' %}" class="btn btn-accent">Pregled ponudb</a>
+            <a href="{% url 'books:catalog' %}" class="btn btn-outline">Odpri katalog</a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Bralci zate &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="info-card">
+    <div class="info-card-icon">◆</div>
+    <div class="info-card-content">
+        <h3>Izključil si se iz sistema ujemanj</h3>
+        <p>V nastavitvah profila je označeno, da ne sodeluješ v sistemu ujemanj. To pomeni, da:</p>
+        <ul>
+            <li>Tvoj profil ni predlagan drugim bralcem.</li>
+            <li>Ti ne prejemaš predlogov drugih bralcev.</li>
+            <li>Predlogi skupin so še vedno vidni, če jih vklopiš v nastavitvah.</li>
+        </ul>
+        <a href="{% url 'accounts:profile_edit' %}" class="btn btn-accent">Odpri nastavitve profila</a>
+    </div>
+</div>
+{% endblock %}

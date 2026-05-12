@@ -1,0 +1,1578 @@
+{
+  "genres": [
+    "Fantazija",
+    "Znanstvena fantastika",
+    "Krimi",
+    "Triler",
+    "Romanca",
+    "Zgodovinski roman",
+    "Klasika",
+    "Literarna proza",
+    "Biografija",
+    "Esejistika",
+    "Mladinska",
+    "Grozljivka",
+    "Distopija",
+    "Pustolovščina",
+    "Filozofija",
+    "Poezija"
+  ],
+  "books": [
+    {
+      "title": "Hobit",
+      "authors": [
+        "J. R. R. Tolkien"
+      ],
+      "publication_year": 1937,
+      "language": "sl",
+      "genres": [
+        "Fantazija",
+        "Pustolovščina",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 320,
+      "description": "Zgodba o hobitu Bilbu Bogišu, ki se skupaj s čarovnikom Gandalfom in skupino škratov odpravi na pustolovsko potovanje."
+    },
+    {
+      "title": "Gospodar prstanov: Bratovščina prstana",
+      "authors": [
+        "J. R. R. Tolkien"
+      ],
+      "publication_year": 1954,
+      "language": "sl",
+      "genres": [
+        "Fantazija",
+        "Pustolovščina",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 480,
+      "description": "Prvi del epske fantazijske trilogije o boju za Srednji svet."
+    },
+    {
+      "title": "Harry Potter in kamen modrosti",
+      "authors": [
+        "J. K. Rowling"
+      ],
+      "publication_year": 1997,
+      "language": "sl",
+      "genres": [
+        "Fantazija",
+        "Mladinska"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 320,
+      "description": "Deček Harry Potter odkrije, da je čarovnik, in gre v čarovniško šolo Bradavičarka."
+    },
+    {
+      "title": "Harry Potter in dvorana skrivnosti",
+      "authors": [
+        "J. K. Rowling"
+      ],
+      "publication_year": 1998,
+      "language": "sl",
+      "genres": [
+        "Fantazija",
+        "Mladinska"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 352,
+      "description": "Harryjevo drugo leto v Bradavičarki, kjer se znajde sredi skrivnostne zarote."
+    },
+    {
+      "title": "Igra prestolov",
+      "authors": [
+        "George R. R. Martin"
+      ],
+      "publication_year": 1996,
+      "language": "sl",
+      "genres": [
+        "Fantazija"
+      ],
+      "publisher": "Gnosis",
+      "page_count": 720,
+      "description": "Prvi del epske sage Pesem ledu in ognja o boju za železni prestol."
+    },
+    {
+      "title": "Ime vetra",
+      "authors": [
+        "Patrick Rothfuss"
+      ],
+      "publication_year": 2007,
+      "language": "en",
+      "genres": [
+        "Fantazija"
+      ],
+      "publisher": "DAW Books",
+      "page_count": 672,
+      "description": "Zgodba o mladem Kvotheju, ki postane legendarni čarovnik."
+    },
+    {
+      "title": "Čarovnik iz Zemljemorja",
+      "authors": [
+        "Ursula K. Le Guin"
+      ],
+      "publication_year": 1968,
+      "language": "en",
+      "genres": [
+        "Fantazija",
+        "Mladinska"
+      ],
+      "publisher": "Parnassus Press",
+      "page_count": 256,
+      "description": "Prvi del klasične serije o mladem čarovniku Gedu."
+    },
+    {
+      "title": "Princesa neveste",
+      "authors": [
+        "William Goldman"
+      ],
+      "publication_year": 1973,
+      "language": "en",
+      "genres": [
+        "Fantazija",
+        "Pustolovščina",
+        "Romanca"
+      ],
+      "publisher": "Harcourt",
+      "page_count": 512,
+      "description": "Zgodba o ljubezni, piratih, velikanih in maščevanju."
+    },
+    {
+      "title": "Ameriški bogovi",
+      "authors": [
+        "Neil Gaiman"
+      ],
+      "publication_year": 2001,
+      "language": "en",
+      "genres": [
+        "Fantazija"
+      ],
+      "publisher": "William Morrow",
+      "page_count": 480,
+      "description": "Stari bogovi se borijo proti novim v sodobni Ameriki."
+    },
+    {
+      "title": "Koralina",
+      "authors": [
+        "Neil Gaiman"
+      ],
+      "publication_year": 2002,
+      "language": "en",
+      "genres": [
+        "Fantazija",
+        "Mladinska",
+        "Grozljivka"
+      ],
+      "publisher": "HarperCollins",
+      "page_count": 192,
+      "description": "Deklica odkrije vzporedni svet za skrivnostnimi vrati."
+    },
+    {
+      "title": "Sijaj",
+      "authors": [
+        "Frank Herbert"
+      ],
+      "publication_year": 1965,
+      "language": "sl",
+      "genres": [
+        "Znanstvena fantastika",
+        "Klasika"
+      ],
+      "publisher": "Sanje",
+      "page_count": 800,
+      "description": "Epska saga o puščavskem planetu Arrakis in boju za dragoceno začimbo."
+    },
+    {
+      "title": "Peklenska pomaranča",
+      "authors": [
+        "Anthony Burgess"
+      ],
+      "publication_year": 1962,
+      "language": "sl",
+      "genres": [
+        "Znanstvena fantastika",
+        "Distopija",
+        "Klasika"
+      ],
+      "publisher": "Cankarjeva založba",
+      "page_count": 240,
+      "description": "Distopična zgodba o nasilnem mladostniku Alexu in kontroverznem zdravljenju."
+    },
+    {
+      "title": "1984",
+      "authors": [
+        "George Orwell"
+      ],
+      "publication_year": 1949,
+      "language": "sl",
+      "genres": [
+        "Distopija",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 320,
+      "description": "Klasika o totalitarnem režimu, ki nadzira vsak vidik življenja."
+    },
+    {
+      "title": "Krasni novi svet",
+      "authors": [
+        "Aldous Huxley"
+      ],
+      "publication_year": 1932,
+      "language": "sl",
+      "genres": [
+        "Distopija",
+        "Znanstvena fantastika",
+        "Klasika"
+      ],
+      "publisher": "DZS",
+      "page_count": 272,
+      "description": "Vizija prihodnosti, kjer tehnologija in genetski inženiring oblikujeta družbo."
+    },
+    {
+      "title": "Fundacija",
+      "authors": [
+        "Isaac Asimov"
+      ],
+      "publication_year": 1951,
+      "language": "en",
+      "genres": [
+        "Znanstvena fantastika",
+        "Klasika"
+      ],
+      "publisher": "Gnome Press",
+      "page_count": 256,
+      "description": "Epska saga o padcu galaktičnega cesarstva."
+    },
+    {
+      "title": "Jaz, Robot",
+      "authors": [
+        "Isaac Asimov"
+      ],
+      "publication_year": 1950,
+      "language": "en",
+      "genres": [
+        "Znanstvena fantastika"
+      ],
+      "publisher": "Gnome Press",
+      "page_count": 224,
+      "description": "Zbirka zgodb o robotih in treh zakonih robotike."
+    },
+    {
+      "title": "Ender's Game",
+      "authors": [
+        "Orson Scott Card"
+      ],
+      "publication_year": 1985,
+      "language": "en",
+      "genres": [
+        "Znanstvena fantastika"
+      ],
+      "publisher": "Tor Books",
+      "page_count": 352,
+      "description": "Otrok-genij se usposablja za boj proti vesoljskim vsiljivcem."
+    },
+    {
+      "title": "Neuromancer",
+      "authors": [
+        "William Gibson"
+      ],
+      "publication_year": 1984,
+      "language": "en",
+      "genres": [
+        "Znanstvena fantastika"
+      ],
+      "publisher": "Ace",
+      "page_count": 288,
+      "description": "Kultna cyberpunk zgodba, ki je definirala žanr."
+    },
+    {
+      "title": "Marovec",
+      "authors": [
+        "Andy Weir"
+      ],
+      "publication_year": 2011,
+      "language": "sl",
+      "genres": [
+        "Znanstvena fantastika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 384,
+      "description": "Astronavt, ki ostane sam na Marsu in se bori za preživetje."
+    },
+    {
+      "title": "Projekt Hail Mary",
+      "authors": [
+        "Andy Weir"
+      ],
+      "publication_year": 2021,
+      "language": "en",
+      "genres": [
+        "Znanstvena fantastika"
+      ],
+      "publisher": "Ballantine Books",
+      "page_count": 496,
+      "description": "Osamljen astronavt na skrivnostni misiji, ki lahko reši Zemljo."
+    },
+    {
+      "title": "Problem treh teles",
+      "authors": [
+        "Liu Cixin"
+      ],
+      "publication_year": 2008,
+      "language": "en",
+      "genres": [
+        "Znanstvena fantastika"
+      ],
+      "publisher": "Tor Books",
+      "page_count": 400,
+      "description": "Kitajska ZF saga o prvem stiku z vesoljci."
+    },
+    {
+      "title": "Deklica z zmajskim tetovažem",
+      "authors": [
+        "Stieg Larsson"
+      ],
+      "publication_year": 2005,
+      "language": "sl",
+      "genres": [
+        "Krimi",
+        "Triler"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 544,
+      "description": "Novinar in heker preiskujeta staro izginotje v bogati švedski družini."
+    },
+    {
+      "title": "Angeli in demoni",
+      "authors": [
+        "Dan Brown"
+      ],
+      "publication_year": 2000,
+      "language": "sl",
+      "genres": [
+        "Triler"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 616,
+      "description": "Simbolog Robert Langdon reši uganko v Vatikanu."
+    },
+    {
+      "title": "Da Vincijeva šifra",
+      "authors": [
+        "Dan Brown"
+      ],
+      "publication_year": 2003,
+      "language": "sl",
+      "genres": [
+        "Triler"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 480,
+      "description": "Simbolog sledi namigom, skritim v Leonardovih delih."
+    },
+    {
+      "title": "In potem ni bilo nikogar",
+      "authors": [
+        "Agatha Christie"
+      ],
+      "publication_year": 1939,
+      "language": "sl",
+      "genres": [
+        "Krimi",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 272,
+      "description": "Deset neznancev povabljenih na otok, kjer začnejo umirati drug za drugim."
+    },
+    {
+      "title": "Umor v Orient ekspresu",
+      "authors": [
+        "Agatha Christie"
+      ],
+      "publication_year": 1934,
+      "language": "sl",
+      "genres": [
+        "Krimi",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 256,
+      "description": "Hercule Poirot rešuje umor v vlaku, ujetem v snegu."
+    },
+    {
+      "title": "Izginula",
+      "authors": [
+        "Gillian Flynn"
+      ],
+      "publication_year": 2012,
+      "language": "sl",
+      "genres": [
+        "Triler",
+        "Krimi"
+      ],
+      "publisher": "Učila",
+      "page_count": 432,
+      "description": "Ženin izginotja privede do mračnih družinskih skrivnosti."
+    },
+    {
+      "title": "Molk jagnjet",
+      "authors": [
+        "Thomas Harris"
+      ],
+      "publication_year": 1988,
+      "language": "en",
+      "genres": [
+        "Triler",
+        "Krimi"
+      ],
+      "publisher": "St. Martin's Press",
+      "page_count": 352,
+      "description": "FBI-jevka išče serijskega morilca s pomočjo kanibala dr. Hannibala Lecterja."
+    },
+    {
+      "title": "Deklica na vlaku",
+      "authors": [
+        "Paula Hawkins"
+      ],
+      "publication_year": 2015,
+      "language": "sl",
+      "genres": [
+        "Triler"
+      ],
+      "publisher": "Učila",
+      "page_count": 416,
+      "description": "Alkoholiziranka opazuje druge iz vlaka in postane priča zločinu."
+    },
+    {
+      "title": "Tišina",
+      "authors": [
+        "Alex Michaelides"
+      ],
+      "publication_year": 2019,
+      "language": "sl",
+      "genres": [
+        "Triler"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 336,
+      "description": "Psihoterapevt poskuša prebiti tišino slikarke, ki je umorila moža."
+    },
+    {
+      "title": "Institut",
+      "authors": [
+        "Stephen King"
+      ],
+      "publication_year": 2019,
+      "language": "en",
+      "genres": [
+        "Triler",
+        "Grozljivka"
+      ],
+      "publisher": "Scribner",
+      "page_count": 576,
+      "description": "Otroci s posebnimi sposobnostmi so ujeti v skrivnostni ustanovi."
+    },
+    {
+      "title": "Zločin in kazen",
+      "authors": [
+        "Fjodor Dostojevski"
+      ],
+      "publication_year": 1866,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 560,
+      "description": "Psihološka študija morilca in njegove muke zaradi vesti."
+    },
+    {
+      "title": "Bratje Karamazovi",
+      "authors": [
+        "Fjodor Dostojevski"
+      ],
+      "publication_year": 1880,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza",
+        "Filozofija"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 840,
+      "description": "Epska družinska saga o veri, dvomu in krivdi."
+    },
+    {
+      "title": "Vojna in mir",
+      "authors": [
+        "Lev Tolstoj"
+      ],
+      "publication_year": 1869,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Zgodovinski roman"
+      ],
+      "publisher": "Cankarjeva založba",
+      "page_count": 1225,
+      "description": "Panorama ruske družbe v času Napoleonovih vojn."
+    },
+    {
+      "title": "Ana Karenina",
+      "authors": [
+        "Lev Tolstoj"
+      ],
+      "publication_year": 1877,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza",
+        "Romanca"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 864,
+      "description": "Tragična zgodba o ljubezni, izdaji in družbenih normah."
+    },
+    {
+      "title": "Veliki Gatsby",
+      "authors": [
+        "F. Scott Fitzgerald"
+      ],
+      "publication_year": 1925,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 192,
+      "description": "Portret ameriške sanje v džezovski dobi dvajsetih let."
+    },
+    {
+      "title": "Ponos in prevzetnost",
+      "authors": [
+        "Jane Austen"
+      ],
+      "publication_year": 1813,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Romanca"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 368,
+      "description": "Elizabeth Bennet se sooča z ljubeznijo, družbeno tradicijo in prevzetnostjo."
+    },
+    {
+      "title": "Jane Eyre",
+      "authors": [
+        "Charlotte Brontë"
+      ],
+      "publication_year": 1847,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Romanca"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 432,
+      "description": "Zgodba sirote, ki postane guvernanta in najde ljubezen na skrivnostnem dvorcu."
+    },
+    {
+      "title": "Viharni vrh",
+      "authors": [
+        "Emily Brontë"
+      ],
+      "publication_year": 1847,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Romanca"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 336,
+      "description": "Mračna ljubezenska zgodba med Heathcliffom in Catherine na angleških močvirjih."
+    },
+    {
+      "title": "Oliver Twist",
+      "authors": [
+        "Charles Dickens"
+      ],
+      "publication_year": 1838,
+      "language": "sl",
+      "genres": [
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 480,
+      "description": "Zgodba sirote, ki se prebija skozi londonsko podzemlje 19. stoletja."
+    },
+    {
+      "title": "Lovec v rži",
+      "authors": [
+        "J. D. Salinger"
+      ],
+      "publication_year": 1951,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 272,
+      "description": "Kultni roman o mladostniškem uporu glavnega junaka Holdena Caulfielda."
+    },
+    {
+      "title": "Ubiti ptiča oponašalca",
+      "authors": [
+        "Harper Lee"
+      ],
+      "publication_year": 1960,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 384,
+      "description": "Skozi oči deklice vidimo rasno pravico na ameriškem Jugu."
+    },
+    {
+      "title": "Starec in morje",
+      "authors": [
+        "Ernest Hemingway"
+      ],
+      "publication_year": 1952,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 128,
+      "description": "Kratek roman o starem kubanskem ribiču v boju z ogromno ribo."
+    },
+    {
+      "title": "Sto let samote",
+      "authors": [
+        "Gabriel García Márquez"
+      ],
+      "publication_year": 1967,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza"
+      ],
+      "publisher": "Cankarjeva založba",
+      "page_count": 448,
+      "description": "Magični realizem v sagi družine Buendía v izmišljenem mestu Macondo."
+    },
+    {
+      "title": "Slepa pega",
+      "authors": [
+        "José Saramago"
+      ],
+      "publication_year": 1995,
+      "language": "sl",
+      "genres": [
+        "Literarna proza"
+      ],
+      "publisher": "Cankarjeva založba",
+      "page_count": 352,
+      "description": "Skrivnostna epidemija slepote ohromi celotno mesto."
+    },
+    {
+      "title": "Mačka pod zrcalom",
+      "authors": [
+        "Drago Jančar"
+      ],
+      "publication_year": 2009,
+      "language": "sl",
+      "genres": [
+        "Literarna proza"
+      ],
+      "publisher": "Modrijan",
+      "page_count": 248,
+      "description": "Sodobni slovenski roman o spominu in identiteti."
+    },
+    {
+      "title": "Alamut",
+      "authors": [
+        "Vladimir Bartol"
+      ],
+      "publication_year": 1938,
+      "language": "sl",
+      "genres": [
+        "Zgodovinski roman",
+        "Klasika"
+      ],
+      "publisher": "Sanje",
+      "page_count": 480,
+      "description": "Zgodovinski roman o islamski sekti ismailitov v 11. stoletju."
+    },
+    {
+      "title": "To noč sem jo videl",
+      "authors": [
+        "Drago Jančar"
+      ],
+      "publication_year": 2010,
+      "language": "sl",
+      "genres": [
+        "Zgodovinski roman",
+        "Literarna proza"
+      ],
+      "publisher": "Modrijan",
+      "page_count": 200,
+      "description": "Več glasov pripoveduje o usodi mlade ženske med drugo svetovno vojno."
+    },
+    {
+      "title": "Matilda",
+      "authors": [
+        "Roald Dahl"
+      ],
+      "publication_year": 1988,
+      "language": "sl",
+      "genres": [
+        "Mladinska"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 240,
+      "description": "Bistra deklica Matilda s posebnimi sposobnostmi premaga zlobne odrasle."
+    },
+    {
+      "title": "Čarli in tovarna čokolade",
+      "authors": [
+        "Roald Dahl"
+      ],
+      "publication_year": 1964,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Pustolovščina"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 176,
+      "description": "Čarli osvoji zlati listek in obišče skrivnostno tovarno čokolade."
+    },
+    {
+      "title": "Deklica in lisjak",
+      "authors": [
+        "Evelina Umek"
+      ],
+      "publication_year": 2018,
+      "language": "sl",
+      "genres": [
+        "Mladinska"
+      ],
+      "publisher": "Miš",
+      "page_count": 96,
+      "description": "Ganljiva zgodba o prijateljstvu med deklico in lisjakom."
+    },
+    {
+      "title": "Grdi raček",
+      "authors": [
+        "Hans Christian Andersen"
+      ],
+      "publication_year": 1843,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 32,
+      "description": "Klasična pravljica o sprejemanju in lepoti."
+    },
+    {
+      "title": "Mali princ",
+      "authors": [
+        "Antoine de Saint-Exupéry"
+      ],
+      "publication_year": 1943,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Klasika",
+        "Filozofija"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 112,
+      "description": "Pilota sreča mali princ iz asteroida – filozofska zgodba za vse starosti."
+    },
+    {
+      "title": "Pika Nogavička",
+      "authors": [
+        "Astrid Lindgren"
+      ],
+      "publication_year": 1945,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 160,
+      "description": "Najmočnejša deklica na svetu in njene pustolovščine."
+    },
+    {
+      "title": "Krivda je v zvezdah",
+      "authors": [
+        "John Green"
+      ],
+      "publication_year": 2012,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Romanca"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 320,
+      "description": "Ljubezenska zgodba dveh najstnikov, ki se borita z rakom."
+    },
+    {
+      "title": "Lovci na ogenj in led",
+      "authors": [
+        "Suzanne Collins"
+      ],
+      "publication_year": 2008,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Distopija"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 384,
+      "description": "Katniss Everdeen v distopični prihodnosti se bori za preživetje v Igrah lakote."
+    },
+    {
+      "title": "Divergentna",
+      "authors": [
+        "Veronica Roth"
+      ],
+      "publication_year": 2011,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Distopija"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 448,
+      "description": "Mlada Tris odkrije, da je divergentka v strogo razdeljeni družbi."
+    },
+    {
+      "title": "Eleanor in Park",
+      "authors": [
+        "Rainbow Rowell"
+      ],
+      "publication_year": 2013,
+      "language": "en",
+      "genres": [
+        "Mladinska",
+        "Romanca"
+      ],
+      "publisher": "St. Martin's Press",
+      "page_count": 336,
+      "description": "Ljubezenska zgodba dveh najstniških zunanjezi v osemdesetih letih."
+    },
+    {
+      "title": "Ime rože",
+      "authors": [
+        "Umberto Eco"
+      ],
+      "publication_year": 1980,
+      "language": "sl",
+      "genres": [
+        "Zgodovinski roman",
+        "Krimi"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 512,
+      "description": "Srednjeveški detektivski roman v samostanu, kjer umirajo menihi."
+    },
+    {
+      "title": "Stolpi Barchesterja",
+      "authors": [
+        "Ken Follett"
+      ],
+      "publication_year": 1989,
+      "language": "sl",
+      "genres": [
+        "Zgodovinski roman"
+      ],
+      "publisher": "Učila",
+      "page_count": 976,
+      "description": "Saga o gradnji katedrale v 12. stoletju v Angliji."
+    },
+    {
+      "title": "Večer na Kapri",
+      "authors": [
+        "Louis de Bernières"
+      ],
+      "publication_year": 1994,
+      "language": "sl",
+      "genres": [
+        "Zgodovinski roman",
+        "Romanca"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 464,
+      "description": "Ljubezenska zgodba med italijanskim vojakom in grško zdravnico med drugo svetovno vojno."
+    },
+    {
+      "title": "Zabriska Point",
+      "authors": [
+        "Boris Pahor"
+      ],
+      "publication_year": 2008,
+      "language": "sl",
+      "genres": [
+        "Literarna proza",
+        "Zgodovinski roman"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 344,
+      "description": "Spomini avtorja iz časa taborišča."
+    },
+    {
+      "title": "Nekropola",
+      "authors": [
+        "Boris Pahor"
+      ],
+      "publication_year": 1967,
+      "language": "sl",
+      "genres": [
+        "Literarna proza",
+        "Zgodovinski roman",
+        "Biografija"
+      ],
+      "publisher": "Sanje",
+      "page_count": 224,
+      "description": "Pretresljivo pričevanje o avtorjevem preživetju v nacističnih koncentracijskih taboriščih."
+    },
+    {
+      "title": "Sapiens: Kratka zgodovina človeštva",
+      "authors": [
+        "Yuval Noah Harari"
+      ],
+      "publication_year": 2011,
+      "language": "sl",
+      "genres": [
+        "Esejistika",
+        "Filozofija"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 464,
+      "description": "Pogled na zgodovino človeške vrste od kamene dobe do digitalne."
+    },
+    {
+      "title": "Homo Deus",
+      "authors": [
+        "Yuval Noah Harari"
+      ],
+      "publication_year": 2015,
+      "language": "sl",
+      "genres": [
+        "Esejistika",
+        "Filozofija"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 448,
+      "description": "Kratka zgodovina prihodnosti – kam gremo kot vrsta."
+    },
+    {
+      "title": "Steve Jobs",
+      "authors": [
+        "Walter Isaacson"
+      ],
+      "publication_year": 2011,
+      "language": "sl",
+      "genres": [
+        "Biografija"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 656,
+      "description": "Uradna biografija ustanovitelja Appla."
+    },
+    {
+      "title": "Dnevnik Anne Frank",
+      "authors": [
+        "Anne Frank"
+      ],
+      "publication_year": 1947,
+      "language": "sl",
+      "genres": [
+        "Biografija",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 352,
+      "description": "Dnevnik mlade Judinje, ki se med drugo svetovno vojno skriva v Amsterdamu."
+    },
+    {
+      "title": "Človek, ki je sodil sebi",
+      "authors": [
+        "Friderik Nietzsche"
+      ],
+      "publication_year": 1888,
+      "language": "sl",
+      "genres": [
+        "Filozofija",
+        "Biografija"
+      ],
+      "publisher": "Slovenska matica",
+      "page_count": 176,
+      "description": "Avtobiografska refleksija enega največjih filozofov."
+    },
+    {
+      "title": "Tako je govoril Zaratustra",
+      "authors": [
+        "Friedrich Nietzsche"
+      ],
+      "publication_year": 1885,
+      "language": "sl",
+      "genres": [
+        "Filozofija",
+        "Klasika"
+      ],
+      "publisher": "Slovenska matica",
+      "page_count": 368,
+      "description": "Filozofska poezija o nadčloveku in volji do moči."
+    },
+    {
+      "title": "Mojster in Margareta",
+      "authors": [
+        "Mihail Bulgakov"
+      ],
+      "publication_year": 1967,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Fantazija",
+        "Literarna proza"
+      ],
+      "publisher": "Cankarjeva založba",
+      "page_count": 432,
+      "description": "Satiričen roman, v katerem hudič obišče sovjetsko Moskvo."
+    },
+    {
+      "title": "Dar izbire",
+      "authors": [
+        "Edith Eger"
+      ],
+      "publication_year": 2017,
+      "language": "sl",
+      "genres": [
+        "Biografija"
+      ],
+      "publisher": "UMco",
+      "page_count": 368,
+      "description": "Preživetje holokavsta in pot do svobode."
+    },
+    {
+      "title": "Mož, ki je kričal metulj",
+      "authors": [
+        "Jean-Dominique Bauby"
+      ],
+      "publication_year": 1997,
+      "language": "sl",
+      "genres": [
+        "Biografija"
+      ],
+      "publisher": "Sanje",
+      "page_count": 144,
+      "description": "Avtor po možganski kapi piše knjigo z mežikanjem očesa."
+    },
+    {
+      "title": "Misliti, hitro in počasi",
+      "authors": [
+        "Daniel Kahneman"
+      ],
+      "publication_year": 2011,
+      "language": "sl",
+      "genres": [
+        "Esejistika",
+        "Filozofija"
+      ],
+      "publisher": "UMco",
+      "page_count": 528,
+      "description": "Nobelov nagrajenec razloži dva načina mišljenja."
+    },
+    {
+      "title": "Sedem navad zelo uspešnih ljudi",
+      "authors": [
+        "Stephen R. Covey"
+      ],
+      "publication_year": 1989,
+      "language": "sl",
+      "genres": [
+        "Esejistika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 384,
+      "description": "Klasika samopomoči in osebne rasti."
+    },
+    {
+      "title": "Človekovo iskanje smisla",
+      "authors": [
+        "Viktor E. Frankl"
+      ],
+      "publication_year": 1946,
+      "language": "sl",
+      "genres": [
+        "Filozofija",
+        "Biografija"
+      ],
+      "publisher": "Mohorjeva",
+      "page_count": 192,
+      "description": "Psihiater opiše svoje izkušnje v koncentracijskem taborišču in razvije logoterapijo."
+    },
+    {
+      "title": "Umetnost vojne",
+      "authors": [
+        "Sun Tzu"
+      ],
+      "publication_year": -500,
+      "language": "sl",
+      "genres": [
+        "Filozofija",
+        "Klasika",
+        "Esejistika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 128,
+      "description": "Starodavni kitajski traktat o strategiji in vojskovanju."
+    },
+    {
+      "title": "Meditacije",
+      "authors": [
+        "Mark Avrelij"
+      ],
+      "publication_year": 180,
+      "language": "sl",
+      "genres": [
+        "Filozofija",
+        "Klasika"
+      ],
+      "publisher": "Slovenska matica",
+      "page_count": 208,
+      "description": "Osebni zapiski rimskega cesarja in stoičnega filozofa."
+    },
+    {
+      "title": "Kresnice",
+      "authors": [
+        "Srečko Kosovel"
+      ],
+      "publication_year": 1977,
+      "language": "sl",
+      "genres": [
+        "Poezija"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 224,
+      "description": "Izbor pesmi enega najpomembnejših slovenskih pesnikov."
+    },
+    {
+      "title": "Krst pri Savici",
+      "authors": [
+        "France Prešeren"
+      ],
+      "publication_year": 1836,
+      "language": "sl",
+      "genres": [
+        "Poezija",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 64,
+      "description": "Narodni pesnik France Prešeren ob pokristjanjevanju Slovencev."
+    },
+    {
+      "title": "Tik pred tabo",
+      "authors": [
+        "Jojo Moyes"
+      ],
+      "publication_year": 2012,
+      "language": "sl",
+      "genres": [
+        "Romanca",
+        "Literarna proza"
+      ],
+      "publisher": "Učila",
+      "page_count": 480,
+      "description": "Ganljiva ljubezenska zgodba med mlado žensko in paraplegikom."
+    },
+    {
+      "title": "Notes",
+      "authors": [
+        "Nicholas Sparks"
+      ],
+      "publication_year": 1996,
+      "language": "sl",
+      "genres": [
+        "Romanca"
+      ],
+      "publisher": "Učila",
+      "page_count": 224,
+      "description": "Starec bere zvezek z ljubezensko zgodbo ženski, ki jo prizadene alzheimerjeva bolezen."
+    },
+    {
+      "title": "Normalni ljudje",
+      "authors": [
+        "Sally Rooney"
+      ],
+      "publication_year": 2018,
+      "language": "sl",
+      "genres": [
+        "Romanca",
+        "Literarna proza"
+      ],
+      "publisher": "UMco",
+      "page_count": 288,
+      "description": "Kompleksna ljubezenska zgodba dveh mladih na Irskem."
+    },
+    {
+      "title": "Gospa Bovary",
+      "authors": [
+        "Gustave Flaubert"
+      ],
+      "publication_year": 1856,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Romanca"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 384,
+      "description": "Tragična zgodba o ženski, ki išče strast izven poroke."
+    },
+    {
+      "title": "Sijaj",
+      "authors": [
+        "Stephen King"
+      ],
+      "publication_year": 1977,
+      "language": "sl",
+      "genres": [
+        "Grozljivka",
+        "Triler"
+      ],
+      "publisher": "Učila",
+      "page_count": 512,
+      "description": "Družina v osamljenem hotelu se sooča s paranormalnimi pojavi."
+    },
+    {
+      "title": "Carrie",
+      "authors": [
+        "Stephen King"
+      ],
+      "publication_year": 1974,
+      "language": "en",
+      "genres": [
+        "Grozljivka"
+      ],
+      "publisher": "Doubleday",
+      "page_count": 288,
+      "description": "Zatirana najstnica odkrije telekinetske moči."
+    },
+    {
+      "title": "Drakula",
+      "authors": [
+        "Bram Stoker"
+      ],
+      "publication_year": 1897,
+      "language": "sl",
+      "genres": [
+        "Grozljivka",
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 480,
+      "description": "Klasičen gotski roman o grofu Drakuli."
+    },
+    {
+      "title": "Frankenstein",
+      "authors": [
+        "Mary Shelley"
+      ],
+      "publication_year": 1818,
+      "language": "sl",
+      "genres": [
+        "Grozljivka",
+        "Klasika",
+        "Znanstvena fantastika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 288,
+      "description": "Dr. Frankenstein ustvari človeka iz mrtvih delov in se sooči s posledicami."
+    },
+    {
+      "title": "Martin Krpan",
+      "authors": [
+        "Fran Levstik"
+      ],
+      "publication_year": 1858,
+      "language": "sl",
+      "genres": [
+        "Klasika"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 80,
+      "description": "Zgodba o slovenskem junaku, ki premaga velikana Brdavsa."
+    },
+    {
+      "title": "Na klancu",
+      "authors": [
+        "Ivan Cankar"
+      ],
+      "publication_year": 1902,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 176,
+      "description": "Socialni roman o ubogi materi in njenem sinu."
+    },
+    {
+      "title": "Hlapec Jernej in njegova pravica",
+      "authors": [
+        "Ivan Cankar"
+      ],
+      "publication_year": 1907,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 96,
+      "description": "Povest o starem hlapcu, ki se bori za pravico."
+    },
+    {
+      "title": "Desetnica",
+      "authors": [
+        "France Bevk"
+      ],
+      "publication_year": 1952,
+      "language": "sl",
+      "genres": [
+        "Klasika",
+        "Mladinska"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 160,
+      "description": "Zgodba o deklici, ki mora oditi od doma v službo."
+    },
+    {
+      "title": "Angel pozabe",
+      "authors": [
+        "Maja Haderlap"
+      ],
+      "publication_year": 2011,
+      "language": "sl",
+      "genres": [
+        "Literarna proza",
+        "Zgodovinski roman"
+      ],
+      "publisher": "Litera",
+      "page_count": 296,
+      "description": "Roman o koroških Slovencih med drugo svetovno vojno."
+    },
+    {
+      "title": "Balerina, balerina",
+      "authors": [
+        "Marko Sosič"
+      ],
+      "publication_year": 1997,
+      "language": "sl",
+      "genres": [
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 200,
+      "description": "Pretresljiv roman o deklici s posebnimi potrebami."
+    },
+    {
+      "title": "Čefurji raus!",
+      "authors": [
+        "Goran Vojnović"
+      ],
+      "publication_year": 2008,
+      "language": "sl",
+      "genres": [
+        "Literarna proza"
+      ],
+      "publisher": "Študentska založba",
+      "page_count": 200,
+      "description": "Roman o priseljencih iz bivše Jugoslavije v ljubljanski soseski."
+    },
+    {
+      "title": "Figa",
+      "authors": [
+        "Goran Vojnović"
+      ],
+      "publication_year": 2016,
+      "language": "sl",
+      "genres": [
+        "Literarna proza"
+      ],
+      "publisher": "Beletrina",
+      "page_count": 320,
+      "description": "Sodobni slovenski roman o treh generacijah družine."
+    },
+    {
+      "title": "Alkimist",
+      "authors": [
+        "Paulo Coelho"
+      ],
+      "publication_year": 1988,
+      "language": "sl",
+      "genres": [
+        "Literarna proza",
+        "Filozofija"
+      ],
+      "publisher": "V.B.Z.",
+      "page_count": 176,
+      "description": "Mladi pastir sledi sanjam in odkriva pomen življenja."
+    },
+    {
+      "title": "Lovec papirnatih zmajev",
+      "authors": [
+        "Khaled Hosseini"
+      ],
+      "publication_year": 2003,
+      "language": "sl",
+      "genres": [
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 416,
+      "description": "Ganljiva zgodba o prijateljstvu in zvestobi v Afganistanu."
+    },
+    {
+      "title": "Tisoč blestečih sonc",
+      "authors": [
+        "Khaled Hosseini"
+      ],
+      "publication_year": 2007,
+      "language": "sl",
+      "genres": [
+        "Literarna proza"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 432,
+      "description": "Zgodba dveh žensk v Afganistanu skozi desetletja konfliktov."
+    },
+    {
+      "title": "Knjižna tatica",
+      "authors": [
+        "Markus Zusak"
+      ],
+      "publication_year": 2005,
+      "language": "sl",
+      "genres": [
+        "Zgodovinski roman",
+        "Literarna proza",
+        "Mladinska"
+      ],
+      "publisher": "Učila",
+      "page_count": 576,
+      "description": "Smrt pripoveduje zgodbo o nemški deklici, ki krade knjige med drugo svetovno vojno."
+    },
+    {
+      "title": "Projekt Rosie",
+      "authors": [
+        "Graeme Simsion"
+      ],
+      "publication_year": 2013,
+      "language": "sl",
+      "genres": [
+        "Romanca",
+        "Literarna proza"
+      ],
+      "publisher": "Učila",
+      "page_count": 336,
+      "description": "Genetik z Aspergerjevim sindromom išče popolno ženo s pomočjo vprašalnika."
+    },
+    {
+      "title": "Samota pralnih števil",
+      "authors": [
+        "Paolo Giordano"
+      ],
+      "publication_year": 2008,
+      "language": "sl",
+      "genres": [
+        "Literarna proza"
+      ],
+      "publisher": "Cankarjeva založba",
+      "page_count": 304,
+      "description": "Zgodba o dveh osamljenih dušah, ki se srečata."
+    },
+    {
+      "title": "Noč, ko sem umrla",
+      "authors": [
+        "Ransom Riggs"
+      ],
+      "publication_year": 2011,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Fantazija"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 352,
+      "description": "Fant odkrije skrivnostno sirotišnico za nenavadne otroke."
+    },
+    {
+      "title": "Tekmovalci",
+      "authors": [
+        "Lauren Oliver"
+      ],
+      "publication_year": 2011,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Distopija"
+      ],
+      "publisher": "Učila",
+      "page_count": 384,
+      "description": "Distopična ljubezenska zgodba v svetu, kjer je ljubezen prepovedana."
+    },
+    {
+      "title": "Labirint",
+      "authors": [
+        "James Dashner"
+      ],
+      "publication_year": 2009,
+      "language": "sl",
+      "genres": [
+        "Mladinska",
+        "Distopija",
+        "Pustolovščina"
+      ],
+      "publisher": "Mladinska knjiga",
+      "page_count": 384,
+      "description": "Fantje ujeti v labirintu iščejo pot ven."
+    },
+    {
+      "title": "Draga Martha",
+      "authors": [
+        "Cecelia Ahern"
+      ],
+      "publication_year": 2004,
+      "language": "sl",
+      "genres": [
+        "Romanca"
+      ],
+      "publisher": "Učila",
+      "page_count": 400,
+      "description": "Mlada vdova prejema pisma od pokojnega moža."
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ offer.book.title }} &ndash; Izposoja{% endblock %}
+
+{% block content %}
+<div class="offer-detail">
+    <div class="offer-detail-left">
+        {% if offer.book.cover_image %}
+            <img src="{{ offer.book.cover_image.url }}" alt="{{ offer.book.title }}" class="book-detail-cover">
+        {% else %}
+            {% with g=offer.book.genres.all|first %}
+            <div class="book-detail-cover book-cover-placeholder-large{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ offer.book.title }}</div>
+            {% endwith %}
+        {% endif %}
+        <a href="{% url 'books:detail' offer.book.id %}" class="btn btn-outline btn-block">Stran knjige</a>
+    </div>
+
+    <div class="offer-detail-right">
+        <h1>{{ offer.book.title }}</h1>
+        <div class="book-authors-large">{{ offer.book.authors_list }}</div>
+
+        {# Lastnik info #}
+        <div class="offer-owner-card">
+            <h3>Ponuja</h3>
+            <a href="{% url 'accounts:profile_view' offer.owner.username %}" class="owner-link">
+                {% if offer.owner.profile.avatar %}
+                    <img src="{{ offer.owner.profile.avatar.url }}" alt="" class="owner-avatar">
+                {% else %}
+                    <div class="owner-avatar owner-avatar-placeholder">{{ offer.owner.username|first|upper }}</div>
+                {% endif %}
+                <div class="owner-info">
+                    <div class="owner-name">{{ offer.owner.username }}</div>
+                    {% if offer.owner.profile.region %}
+                        <div class="owner-region">{{ offer.owner.profile.get_region_display }}</div>
+                    {% endif %}
+                    {% if offer.owner.profile.reliability_count %}
+                        <div class="owner-reliability">
+                            ★ {{ offer.owner.profile.reliability_score }} iz 5
+                            <span class="muted-small">({{ offer.owner.profile.reliability_count }} ocen)</span>
+                        </div>
+                    {% else %}
+                        <div class="muted-small">Še brez ocen zanesljivosti</div>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+
+        {# Podatki o ponudbi #}
+        <div class="book-meta-list">
+            <dt>Status</dt>
+            <dd><span class="status-badge status-{{ offer.status }}">{{ offer.get_status_display }}</span></dd>
+
+            <dt>Stanje izvoda</dt>
+            <dd><span class="condition-badge condition-{{ offer.condition }}">{{ offer.get_condition_display }}</span></dd>
+
+            <dt>Največja doba izposoje</dt>
+            <dd>{{ offer.max_loan_days }} dni</dd>
+
+            <dt>Ponujeno od</dt>
+            <dd>{{ offer.created_at|date:"j. n. Y" }}</dd>
+        </div>
+
+        {% if offer.notes %}
+            <div class="book-description">
+                <h2>Opombe lastnika</h2>
+                <p>{{ offer.notes|linebreaksbr }}</p>
+            </div>
+        {% endif %}
+
+        {# Akcije #}
+        <div class="offer-actions">
+            {% if is_owner %}
+                <a href="{% url 'loans:offer_edit' offer.id %}" class="btn btn-outline">Uredi ponudbo</a>
+                <form method="post" action="{% url 'loans:offer_toggle' offer.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    {% if offer.status == 'available' %}
+                        <button type="submit" class="btn btn-ghost">Deaktiviraj ponudbo</button>
+                    {% elif offer.status == 'inactive' %}
+                        <button type="submit" class="btn btn-accent">Aktiviraj ponudbo</button>
+                    {% endif %}
+                </form>
+            {% elif user.is_authenticated %}
+                {% if existing_request %}
+                    <div class="message info">
+                        Že si poslal prošnjo za to knjigo (status: {{ existing_request.get_status_display }}).
+                        <a href="{% url 'loans:my_loans' %}">Poglej moje izposoje</a>
+                    </div>
+                {% elif offer.status == 'available' %}
+                    <a href="{% url 'loans:request_create' offer.id %}" class="btn btn-accent">Želim si izposoditi</a>
+                {% else %}
+                    <button class="btn btn-ghost" disabled>Knjiga ni na voljo</button>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="btn btn-accent">Prijava za prošnjo</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Izposoja knjig &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Izposoja knjig</h1>
+    <p class="page-subtitle">Izposodi si knjige od drugih bralcev ali ponudi svoje.</p>
+</div>
+
+<form method="get" class="catalog-filters">
+    <div class="search-bar">
+        <input type="text" name="q" value="{{ query }}" placeholder="Naslov ali avtor ..." class="search-input">
+        <button type="submit" class="btn btn-primary">Išči</button>
+    </div>
+
+    <div class="filter-row">
+        <div class="filter-group">
+            <label>Regija</label>
+            <select name="region" onchange="this.form.submit()">
+                <option value="">Vse regije</option>
+                {% for code, label in regions %}
+                    {% if code %}
+                        <option value="{{ code }}" {% if selected_region == code %}selected{% endif %}>{{ label }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Stanje izvoda</label>
+            <select name="condition" onchange="this.form.submit()">
+                <option value="">Vsa stanja</option>
+                {% for code, label in conditions %}
+                    <option value="{{ code }}" {% if selected_condition == code %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Razvrsti po</label>
+            <select name="sort" onchange="this.form.submit()">
+                <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Najnovejše</option>
+                <option value="title" {% if selected_sort == 'title' %}selected{% endif %}>Naslovu</option>
+            </select>
+        </div>
+
+        {% if query or selected_region or selected_condition %}
+            <a href="{% url 'loans:browse' %}" class="btn btn-ghost">Počisti</a>
+        {% endif %}
+    </div>
+</form>
+
+<div class="results-info">
+    Najdenih ponudb: <strong>{{ page_obj.paginator.count }}</strong>
+</div>
+
+{% if page_obj.object_list %}
+    <div class="book-grid">
+        {% for offer in page_obj %}
+            <a href="{% url 'loans:offer_detail' offer.id %}" class="book-card">
+                {% if offer.book.cover_image %}
+                    <img src="{{ offer.book.cover_image.url }}" alt="{{ offer.book.title }}" class="book-cover">
+                {% else %}
+                    {% with g=offer.book.genres.all|first %}
+                    <div class="book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ offer.book.title }}</div>
+                    {% endwith %}
+                {% endif %}
+                <div class="book-card-info">
+                    <div class="book-card-title">{{ offer.book.title }}</div>
+                    <div class="book-card-author">{{ offer.book.authors_list }}</div>
+                    <div class="offer-meta">
+                        <span class="offer-owner">{{ offer.owner.username }}</span>
+                        {% if offer.owner.profile.region %}
+                            <span class="offer-region">{{ offer.owner.profile.get_region_display }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="offer-condition condition-{{ offer.condition }}">
+                        {{ offer.get_condition_display }}
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_region %}&region={{ selected_region }}{% endif %}" class="btn btn-outline">&laquo; Prejšnja</a>
+            {% endif %}
+            <span class="page-info">Stran {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_region %}&region={{ selected_region }}{% endif %}" class="btn btn-outline">Naslednja &raquo;</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% else %}
+    <div class="empty-state-large">
+        <div class="empty-icon">—</div>
+        <h3>Ni ponudb za izposojo</h3>
+        <p>Trenutno ni nobene aktivne ponudbe. Odpri katalog in ponudi svojo knjigo za izposojo.</p>
+        <a href="{% url 'books:catalog' %}" class="btn btn-accent">Odpri katalog</a>
+    </div>
+{% endif %}
+{% endblock %}

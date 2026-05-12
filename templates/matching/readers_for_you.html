@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Bralci zate &ndash; BookMatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Bralci zate</h1>
+    <p class="page-subtitle">Skupine in bralci, ki se ujemajo s tvojim okusom, izbrani s pomočjo strojnega učenja.</p>
+</div>
+
+{% if needs_more_ratings %}
+    <div class="info-card">
+        <div class="info-card-icon">◆</div>
+        <div class="info-card-content">
+            <h3>Potrebujemo še malo podatkov</h3>
+            <p>Da ti lahko predlagamo skupine in bralce, potrebujemo vsaj <strong>3 ocene</strong>. Trenutno imaš <strong>{{ user_rating_count }}</strong>.</p>
+            <a href="{% url 'books:catalog' %}" class="btn btn-accent">Odpri katalog</a>
+        </div>
+    </div>
+{% else %}
+
+    <section class="matching-section">
+        <h2>Predlagane skupine</h2>
+        <p class="section-subtitle">Skupine, kjer se pogovarjajo o zvrsteh, ki ti ustrezajo.</p>
+
+        {% if group_suggestions %}
+            <div class="group-grid">
+                {% for s in group_suggestions %}
+                    <div class="group-card with-dismiss">
+                        <a href="{% url 'groups:detail' s.group.slug %}" class="group-card-link">
+                            {% if s.group.cover_image %}
+                                <img src="{{ s.group.cover_image.url }}" alt="" class="group-cover">
+                            {% else %}
+                                <div class="group-cover group-cover-placeholder">
+                                    {% if s.group.genres.all %}{{ s.group.genres.all|first }}{% else %}·{% endif %}
+                                </div>
+                            {% endif %}
+                            <div class="group-card-info">
+                                <h3>{{ s.group.name }}</h3>
+                                <div class="group-meta">
+                                    <span>{{ s.group.member_count }} članov</span>
+                                    {% widthratio s.match_score 1 100 as match_percent %}
+                                    <span class="match-badge">{{ match_percent }}%</span>
+                                </div>
+                                <p class="suggestion-reason">{{ s.reason }}</p>
+                            </div>
+                        </a>
+                        <form method="post" action="{% url 'matching:dismiss_group' s.id %}" class="dismiss-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-ghost btn-small" title="Skrij">✕</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                Ni predlogov. Administrator mora pognati <code>python manage.py train_matcher</code>.
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="matching-section">
+        <h2>Bralci s podobnim okusom</h2>
+        <p class="section-subtitle">Odstotek ujemanja je izračunan na podlagi vajinih žanrskih preferenc.</p>
+
+        {% if matches_for_display %}
+            <div class="readers-grid">
+                {% for item in matches_for_display %}
+                    <div class="reader-card">
+                        <a href="{% url 'accounts:profile_view' item.other.username %}" class="reader-card-link">
+                            {% if item.other.profile.avatar %}
+                                <img src="{{ item.other.profile.avatar.url }}" alt="" class="reader-avatar">
+                            {% else %}
+                                <div class="reader-avatar reader-avatar-placeholder">{{ item.other.username|first|upper }}</div>
+                            {% endif %}
+                            <div class="reader-info">
+                                <div class="reader-name">{{ item.other.username }}</div>
+                                {% if item.other.profile.region %}
+                                    <div class="reader-location">{{ item.other.profile.get_region_display }}</div>
+                                {% endif %}
+                                <div class="match-circle">{{ item.percent }}%</div>
+                                <div class="match-label">ujemanje</div>
+                                {% if item.match.shared_genres %}
+                                    <p class="shared-genres">{{ item.match.shared_genres }}</p>
+                                {% endif %}
+                            </div>
+                        </a>
+                        <div class="reader-actions">
+                            <a href="{% url 'messaging:start' item.other.username %}" class="btn btn-accent btn-small btn-block">Pošlji sporočilo</a>
+                            <form method="post" action="{% url 'matching:dismiss_match' item.match.id %}" class="dismiss-form-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-ghost btn-small">✕ Skrij</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                Še ni ujemanj. Ko bo v aplikaciji več aktivnih uporabnikov, se bo ta razdelek napolnil.
+            </div>
+        {% endif %}
+    </section>
+
+    <div class="rec-footer">
+        <p class="muted-text">
+            Predlogi skupin in bralcev temeljijo na K-Means gručenju po žanrskem profilu. Model: scikit-learn.
+        </p>
+    </div>
+
+{% endif %}
+{% endblock %}
