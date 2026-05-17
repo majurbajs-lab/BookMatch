@@ -1,22 +1,21 @@
 """Samodejni trening ML modelov ob spremembah ocen.
 
-Trening se zažene kot ločen podproces, kar je zanesljivo tudi na WSGI strežnikih
-(uWSGI/PythonAnywhere), kjer se daemon niti ubijejo med zahtevami.
+Trening teče sinhrono v request threadu, vendar kvečjemu enkrat na 60 sekund
+(THROTTLE_SECONDS). Sinhronizacija je zanesljiva na vseh platformah, vključno
+z PythonAnywhere, kjer zunanji procesi in daemon niti niso zanesljivi.
 """
 
 import logging
-import subprocess
-import sys
 import tempfile
 import time
 from decimal import Decimal
+from io import StringIO
 from pathlib import Path
 
 from django.db.models import Count
 
 logger = logging.getLogger(__name__)
 
-# Največ enkrat na minuto
 THROTTLE_SECONDS = 60
 
 _TMP = Path(tempfile.gettempdir())
@@ -48,37 +47,30 @@ def _eligible_users_count() -> int:
     )
 
 
-def _spawn(cmd_name: str):
-    """Zaženi management command kot neodvisen podproces."""
+def _run_sync(cmd_name: str):
+    from django.core.management import call_command
     try:
-        from django.conf import settings
-        manage_py = str(Path(settings.BASE_DIR) / 'manage.py')
-        subprocess.Popen(
-            [sys.executable, manage_py, cmd_name],
-            cwd=str(settings.BASE_DIR),
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        logger.info('auto_train: zagnan %s', cmd_name)
+        call_command(cmd_name, stdout=StringIO(), stderr=StringIO())
+        logger.info('auto_train %s: OK', cmd_name)
     except Exception:
-        logger.exception('auto_train %s: napaka pri zagonu', cmd_name)
+        logger.exception('auto_train %s: napaka', cmd_name)
 
 
 def maybe_train_recommender():
-    """Zaženi train_recommender v ozadju, če so pogoji izpolnjeni."""
+    """Zaženi train_recommender sinhrono, če so pogoji izpolnjeni."""
     if time.time() - _last_run(_RECOMMENDER_STAMP) < THROTTLE_SECONDS:
         return
     if _eligible_users_count() < 1:
         return
     _mark_run(_RECOMMENDER_STAMP)
-    _spawn('train_recommender')
+    _run_sync('train_recommender')
 
 
 def maybe_train_matcher():
-    """Zaženi train_matcher v ozadju, če so pogoji izpolnjeni."""
+    """Zaženi train_matcher sinhrono, če so pogoji izpolnjeni."""
     if time.time() - _last_run(_MATCHER_STAMP) < THROTTLE_SECONDS:
         return
     if _eligible_users_count() < 1:
         return
     _mark_run(_MATCHER_STAMP)
-    _spawn('train_matcher')
+    _run_sync('train_matcher')
