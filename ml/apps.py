@@ -1,6 +1,7 @@
 import logging
 import os
 import threading
+from io import StringIO
 
 from django.apps import AppConfig
 
@@ -27,22 +28,19 @@ class MlConfig(AppConfig):
 
     def _train_models(self):
         try:
-            from ml.matcher import ReaderMatcher
-            from ml.recommender import ContentBasedRecommender
+            from django.core.management import call_command
+            from django.db import connection
 
             logger.info('[ML] Treniram priporocilni model ...')
-            recommender = ContentBasedRecommender()
-            recommender.fit()
-            recommender.recommend_for_all_users()
+            call_command('train_recommender', stdout=StringIO(), stderr=StringIO())
             logger.info('[ML] Priporocilni model OK.')
 
             logger.info('[ML] Treniram matcher model ...')
-            matcher = ReaderMatcher()
-            matcher.fit()
-            if len(matcher.user_ids) >= 2:
-                matcher.compute_user_matches()
-                matcher.compute_group_suggestions()
+            call_command('train_matcher', stdout=StringIO(), stderr=StringIO())
             logger.info('[ML] Matcher model OK.')
 
         except Exception:
             logger.exception('[ML] Napaka pri treniranju modelov.')
+        finally:
+            from django.db import connection
+            connection.close()

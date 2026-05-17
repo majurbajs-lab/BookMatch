@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=18">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=19">
     {% block extra_head %}{% endblock %}
 </head>
 <body{% if user.is_authenticated %} class="has-sidebar"{% endif %}>
@@ -22,8 +22,9 @@
     <aside class="sidebar">
         <div class="sidebar-brand">
             <a href="{% url 'core:home' %}" class="sidebar-logo-link">
-                <div class="sidebar-logo-icon" style="background-image: url('{% static "images/bookmatch-logo.png" %}')"></div>
-                <span class="sidebar-logo-text">BookMatch</span>
+                <div class="sidebar-logo-box">
+                    <img src="{% static 'images/bookmatch-logo.png' %}" alt="BookMatch" class="sidebar-logo-img">
+                </div>
             </a>
         </div>
 
@@ -153,8 +154,7 @@
 <header class="topbar">
     <div class="topbar-inner">
         <a href="{% url 'core:home' %}" class="topbar-logo">
-            <div class="topbar-logo-icon" style="background-image: url('{% static "images/bookmatch-logo.png" %}')"></div>
-            <span class="topbar-logo-name">BookMatch</span>
+            <img src="{% static 'images/bookmatch-logo.png' %}" alt="BookMatch" class="topbar-logo-img">
         </a>
         <nav class="topbar-nav">
             <a href="{% url 'core:home' %}" class="topbar-nav-btn {% if request.path == '/' %}active{% endif %}">Domov</a>
