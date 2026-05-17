@@ -12,8 +12,8 @@ from django.db.models import Count
 
 logger = logging.getLogger(__name__)
 
-# Največ enkrat na uro, da ne obremenjujemo baze
-THROTTLE_SECONDS = 3600
+# Največ enkrat na minuto
+THROTTLE_SECONDS = 60
 
 _TMP = Path(tempfile.gettempdir())
 _RECOMMENDER_STAMP = _TMP / 'bm_recommender.txt'
