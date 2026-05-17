@@ -24,6 +24,13 @@ def readers_for_you(request):
     user_rating_count = Rating.objects.filter(user=user).count()
     needs_more_ratings = user_rating_count < 3
 
+    if user_rating_count >= 3:
+        try:
+            from ml.auto_train import maybe_train_matcher
+            maybe_train_matcher()
+        except Exception:
+            pass
+
     # Predlagane skupine
     group_suggestions = (
         GroupSuggestion.objects

@@ -16,6 +16,13 @@ def for_you(request):
     """Stran »Za vas« – prikaže personalizirana priporočila."""
     user_rating_count = Rating.objects.filter(user=request.user).count()
 
+    if user_rating_count >= 3:
+        try:
+            from ml.auto_train import maybe_train_recommender
+            maybe_train_recommender()
+        except Exception:
+            pass
+
     recommendations = (
         Recommendation.objects
         .filter(user=request.user, is_dismissed=False)
