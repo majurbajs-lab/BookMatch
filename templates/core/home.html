@@ -1,66 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}BookMatch – Poveži se skozi knjige{% endblock %}
 
 {% block content %}
 {% if not user.is_authenticated %}
 
-    <!-- HERO -->
+    <!-- HERO (centriran) -->
     <section class="lp-hero">
-        <div class="lp-hero-left">
+        <div class="lp-hero-inner">
+            <img src="{% static 'images/bookmatch-logo.png' %}" alt="BookMatch" class="lp-hero-logo">
             <p class="lp-eyebrow">Skupnost bralcev</p>
-            <h1 class="lp-headline">Poveži se z bralci,<br>ki ljubijo iste knjige.</h1>
-            <p class="lp-subtext">Sledi svojemu branju, prejemaj pametna priporočila in si izmenjuj knjige z drugimi.</p>
+            <h1 class="lp-headline">Spletna platforma, ki<br>povezuje bralce.</h1>
+            <p class="lp-subtext">Sledi svojemu branju, prejemaj pametna priporočila in si izmenjuj knjige z drugimi bralci.</p>
             <div class="lp-actions">
-                <a href="{% url 'accounts:register' %}" class="btn btn-accent btn-large">Začni brezplačno</a>
-                <a href="{% url 'accounts:login' %}" class="lp-link-ghost">Že imaš račun? Prijava →</a>
-            </div>
-        </div>
-
-        <div class="lp-hero-right">
-            <div class="lp-preview-card">
-                <div class="lp-preview-header">
-                    <span class="lp-dot"></span>
-                    <span class="lp-dot"></span>
-                    <span class="lp-dot"></span>
-                    <span class="lp-preview-label">Moja knjižnica</span>
-                </div>
-                <div class="lp-preview-body">
-                    <div class="lp-preview-books">
-                        <div class="lp-preview-book cover-genre-fantazija">
-                            <span class="lp-bk-author">Tolkien</span>
-                            <span class="lp-bk-title">Gospodar prstanov</span>
-                        </div>
-                        <div class="lp-preview-book cover-genre-krimi">
-                            <span class="lp-bk-author">Agatha Christie</span>
-                            <span class="lp-bk-title">10 malih zamorčkov</span>
-                        </div>
-                        <div class="lp-preview-book cover-genre-distopija">
-                            <span class="lp-bk-author">George Orwell</span>
-                            <span class="lp-bk-title">1984</span>
-                        </div>
-                        <div class="lp-preview-book cover-genre-romanca">
-                            <span class="lp-bk-author">Jane Austen</span>
-                            <span class="lp-bk-title">Ponos in predsodek</span>
-                        </div>
-                        <div class="lp-preview-book cover-genre-grozljivka">
-                            <span class="lp-bk-author">Stephen King</span>
-                            <span class="lp-bk-title">To</span>
-                        </div>
-                        <div class="lp-preview-book cover-genre-filozofija">
-                            <span class="lp-bk-author">Platon</span>
-                            <span class="lp-bk-title">Država</span>
-                        </div>
-                        <div class="lp-preview-book cover-genre-klasika">
-                            <span class="lp-bk-author">Dostojevski</span>
-                            <span class="lp-bk-title">Zločin in kazen</span>
-                        </div>
-                        <div class="lp-preview-book cover-genre-detektivka">
-                            <span class="lp-bk-author">Conan Doyle</span>
-                            <span class="lp-bk-title">Sherlock Holmes</span>
-                        </div>
-                    </div>
-                </div>
+                <a href="{% url 'accounts:register' %}" class="btn btn-accent btn-large">Ustvari račun</a>
+                <a href="{% url 'accounts:login' %}" class="btn btn-outline btn-large">Prijava</a>
             </div>
         </div>
     </section>

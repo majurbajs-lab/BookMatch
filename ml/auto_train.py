@@ -4,6 +4,7 @@ import logging
 import threading
 import time
 from decimal import Decimal
+from io import StringIO
 from pathlib import Path
 
 from django.db.models import Count
@@ -43,10 +44,8 @@ def _eligible_users_count() -> int:
 
 def _run_recommender():
     try:
-        from ml.recommender import ContentBasedRecommender
-        rec = ContentBasedRecommender()
-        rec.fit()
-        rec.recommend_for_all_users()
+        from django.core.management import call_command
+        call_command('train_recommender', stdout=StringIO(), stderr=StringIO())
         logger.info('auto_train recommender: OK')
     except Exception:
         logger.exception('auto_train recommender: napaka')
@@ -57,12 +56,8 @@ def _run_recommender():
 
 def _run_matcher():
     try:
-        from ml.matcher import ReaderMatcher
-        m = ReaderMatcher()
-        m.fit()
-        if len(m.user_ids) >= 2:
-            m.compute_user_matches()
-            m.compute_group_suggestions()
+        from django.core.management import call_command
+        call_command('train_matcher', stdout=StringIO(), stderr=StringIO())
         logger.info('auto_train matcher: OK')
     except Exception:
         logger.exception('auto_train matcher: napaka')
@@ -72,7 +67,7 @@ def _run_matcher():
 
 
 def maybe_train_recommender():
-    """Zaženi trening priporočilnika v ozadju, če so pogoji izpolnjeni."""
+    """Zaženi train_recommender v ozadju, če so pogoji izpolnjeni."""
     if time.time() - _last_run(_RECOMMENDER_STAMP) < THROTTLE_SECONDS:
         return
     if _eligible_users_count() < 1:
@@ -82,7 +77,7 @@ def maybe_train_recommender():
 
 
 def maybe_train_matcher():
-    """Zaženi trening matcherja v ozadju, če so pogoji izpolnjeni."""
+    """Zaženi train_matcher v ozadju, če so pogoji izpolnjeni."""
     if time.time() - _last_run(_MATCHER_STAMP) < THROTTLE_SECONDS:
         return
     if _eligible_users_count() < 2:
