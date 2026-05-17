@@ -3,10 +3,46 @@
 {% block title %}Prijava &ndash; BookMatch{% endblock %}
 
 {% block content %}
-<div class="container-narrow">
-    <div class="form-container">
-        <h1 class="form-title">Prijava</h1>
-        <p class="form-subtitle">Dobrodošel nazaj.</p>
+<div class="auth-split">
+
+    <!-- LEVA STRAN: BRANDING -->
+    <div class="auth-brand">
+        <div class="auth-brand-logo">
+            <div class="auth-brand-logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                </svg>
+            </div>
+            <span class="auth-brand-logo-text">BookMatch</span>
+        </div>
+
+        <h2>Dobrodošel nazaj,<br>bralec.</h2>
+        <p>Skupnost, ki povezuje bralce, knjige in zgodbe.</p>
+
+        <ul class="auth-brand-feats">
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                Sledi svojemu branju in ocenjevaj knjige
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                Pametna priporočila na podlagi tvojega okusa
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                Poveži se z bralci s podobnim okusom
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                Izposojaj in posojaj fizične knjige
+            </li>
+        </ul>
+    </div>
+
+    <!-- DESNA STRAN: OBRAZEC -->
+    <div class="auth-form">
+        <h1>Prijava</h1>
+        <p class="form-subtitle">Vpiši svoje podatke za nadaljevanje.</p>
 
         <form method="post" novalidate>
             {% csrf_token %}
@@ -23,11 +59,9 @@
 
             <div class="form-group">
                 <label for="{{ form.password.id_for_label }}">Geslo</label>
-                <div style="position: relative;">
+                <div class="auth-pw-wrap">
                     {{ form.password }}
-                    <button type="button" onclick="togglePassword()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--color-text-muted); font-size: 0.75rem; letter-spacing: 0.05em;">
-                        Prikaži
-                    </button>
+                    <button type="button" class="auth-pw-btn" onclick="togglePassword()">Prikaži</button>
                 </div>
                 {% if form.password.errors %}
                     <ul class="errorlist">
@@ -47,16 +81,17 @@
             </div>
         </form>
 
-        <p style="text-align: center; margin-top: 1.5rem; color: var(--color-text-muted);">
+        <p class="auth-toggle">
             Še nimaš računa? <a href="{% url 'accounts:register' %}">Registracija</a>
         </p>
     </div>
+
 </div>
 
 <script>
 function togglePassword() {
     const field = document.getElementById('{{ form.password.id_for_label }}');
-    const btn = document.querySelector('button[onclick="togglePassword()"]');
+    const btn = document.querySelector('.auth-pw-btn');
     if (field.type === 'password') {
         field.type = 'text';
         btn.textContent = 'Skrij';

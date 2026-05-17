@@ -9,60 +9,167 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=12">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=14">
     {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body{% if user.is_authenticated %} class="has-sidebar"{% endif %}>
 
+{% if user.is_authenticated %}
+
+<div class="app-shell">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <a href="{% url 'core:home' %}" class="sidebar-logo-link">
+                <div class="sidebar-logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                    </svg>
+                </div>
+                <span class="sidebar-logo-text">BookMatch</span>
+            </a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="{% url 'core:home' %}" class="sidebar-link {% if request.path == '/' or '/dashboard' in request.path %}active{% endif %}">
+                <span class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg>
+                </span>
+                <span class="sidebar-label">Domov</span>
+            </a>
+
+            <a href="{% url 'books:catalog' %}" class="sidebar-link {% if '/books' in request.path %}active{% endif %}">
+                <span class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </span>
+                <span class="sidebar-label">Katalog</span>
+            </a>
+
+            <a href="{% url 'reading:library' %}" class="sidebar-link {% if '/reading/library' in request.path %}active{% endif %}">
+                <span class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                    </svg>
+                </span>
+                <span class="sidebar-label">Evidenca branja</span>
+            </a>
+
+            <a href="{% url 'reading:home_library' %}" class="sidebar-link {% if '/reading/home-library' in request.path %}active{% endif %}">
+                <span class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                    </svg>
+                </span>
+                <span class="sidebar-label">Moja knjižnica</span>
+            </a>
+
+            <a href="{% url 'recommendations:for_you' %}" class="sidebar-link {% if '/recommendations' in request.path %}active{% endif %}">
+                <span class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                    </svg>
+                </span>
+                <span class="sidebar-label">Priporočila</span>
+            </a>
+
+            <a href="{% url 'matching:readers_for_you' %}" class="sidebar-link {% if '/matching' in request.path %}active{% endif %}">
+                <span class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    </svg>
+                </span>
+                <span class="sidebar-label">Bralci zate</span>
+            </a>
+
+            <a href="{% url 'groups:list' %}" class="sidebar-link {% if '/groups' in request.path %}active{% endif %}">
+                <span class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                    </svg>
+                </span>
+                <span class="sidebar-label">Skupine</span>
+            </a>
+
+            <a href="{% url 'loans:browse' %}" class="sidebar-link {% if '/loans' in request.path %}active{% endif %}">
+                <span class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                    </svg>
+                </span>
+                <span class="sidebar-label">Izposoja</span>
+            </a>
+
+            <a href="{% url 'messaging:inbox' %}" class="sidebar-link {% if '/sporocila' in request.path %}active{% endif %}">
+                <span class="sidebar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                    </svg>
+                </span>
+                <span class="sidebar-label">Sporočila{% if unread_messages_display %}<span class="nav-badge">{{ unread_messages_display }}</span>{% endif %}</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-bottom-inner">
+                <a href="{% url 'accounts:profile_view_me' %}" class="sidebar-user-link">
+                    {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" alt="" class="sidebar-avatar-img">
+                    {% else %}
+                        <div class="sidebar-avatar-placeholder">{{ user.username|first|upper }}</div>
+                    {% endif %}
+                    <div class="sidebar-user-text">
+                        <span class="sidebar-username">{{ user.username }}</span>
+                        <span class="sidebar-user-label">Profil</span>
+                    </div>
+                </a>
+                <form action="{% url 'accounts:logout' %}" method="post" style="margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-sidebar-logout" title="Odjava">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <div class="app-main">
+        <main class="app-content">
+            <div class="container">
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="message {{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+{% else %}
+
+<!-- ===== NEPRIJAVLJENI: klasičen topbar ===== -->
 <header class="topbar">
     <div class="topbar-inner">
-
         <a href="{% url 'core:home' %}" class="topbar-logo">
             <div class="topbar-logo-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
             </div>
             <span class="topbar-logo-name">BookMatch</span>
         </a>
-
         <nav class="topbar-nav">
-            <a href="{% url 'core:home' %}" class="topbar-nav-btn {% if request.path == '/' or '/dashboard' in request.path %}active{% endif %}">Domov</a>
-            <a href="{% url 'books:catalog' %}" class="topbar-nav-btn {% if '/books' in request.path %}active{% endif %}">Išči</a>
-            {% if user.is_authenticated %}
-            <a href="{% url 'reading:library' %}" class="topbar-nav-btn {% if '/reading/library' in request.path %}active{% endif %}">Evidenca branja</a>
-            <a href="{% url 'reading:home_library' %}" class="topbar-nav-btn {% if '/reading/home-library' in request.path %}active{% endif %}">Moja knjižnica</a>
-            <a href="{% url 'recommendations:for_you' %}" class="topbar-nav-btn {% if '/recommendations' in request.path %}active{% endif %}">Priporočila</a>
-            <a href="{% url 'matching:readers_for_you' %}" class="topbar-nav-btn {% if '/matching' in request.path %}active{% endif %}">Bralci zate</a>
-            <a href="{% url 'groups:list' %}" class="topbar-nav-btn {% if '/groups' in request.path %}active{% endif %}">Skupine</a>
-            <a href="{% url 'loans:browse' %}" class="topbar-nav-btn {% if '/loans' in request.path %}active{% endif %}">Izposoja</a>
-            <a href="{% url 'messaging:inbox' %}" class="topbar-nav-btn {% if '/sporocila' in request.path %}active{% endif %}">
-                Sporočila{% if unread_messages_display %}<span class="nav-unread">{{ unread_messages_display }}</span>{% endif %}
-            </a>
-            {% endif %}
+            <a href="{% url 'core:home' %}" class="topbar-nav-btn {% if request.path == '/' %}active{% endif %}">Domov</a>
+            <a href="{% url 'books:catalog' %}" class="topbar-nav-btn {% if '/books' in request.path %}active{% endif %}">Katalog</a>
         </nav>
-
         <div class="topbar-right">
-            {% if user.is_authenticated %}
-                <a href="{% url 'accounts:profile_view_me' %}" class="topbar-profile">
-                    {% if user.profile.avatar %}
-                        <img src="{{ user.profile.avatar.url }}" alt="" class="topbar-profile-avatar">
-                    {% else %}
-                        <div class="topbar-profile-placeholder">{{ user.username|first|upper }}</div>
-                    {% endif %}
-                    <div class="topbar-profile-text">
-                        <span class="topbar-profile-label">Profil</span>
-                        <span class="topbar-profile-name">{{ user.username }}</span>
-                    </div>
-                </a>
-                <form action="{% url 'accounts:logout' %}" method="post" style="margin:0;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-logout">Odjava</button>
-                </form>
-            {% else %}
-                <a href="{% url 'accounts:login' %}" class="btn-nav-ghost">Prijava</a>
-                <a href="{% url 'accounts:register' %}" class="btn-nav-accent">Registracija</a>
-            {% endif %}
+            <a href="{% url 'accounts:login' %}" class="btn-nav-ghost">Prijava</a>
+            <a href="{% url 'accounts:register' %}" class="btn-nav-accent">Registracija</a>
         </div>
-
     </div>
 </header>
 
@@ -75,31 +182,36 @@
                 {% endfor %}
             </div>
         {% endif %}
-        {% block content %}{% endblock %}
-    </div>
-</main>
 
-<footer class="site-footer">
-    <div class="container">
-        <p>BookMatch &copy; 2026 &middot; Projekt UUI &middot; Srednja tehniška in poklicna šola Trbovlje</p>
-    </div>
-</footer>
+{% endif %}
 
+{# ===== EN SAM {% block content %} ZA OBE POSTAVITVI ===== #}
+{% block content %}{% endblock %}
+
+{% if user.is_authenticated %}
+            </div>{# /container #}
+        </main>{# /app-content #}
+        <footer class="app-footer">
+            <p>BookMatch &copy; 2026 &middot; Projekt UUI &middot; Srednja tehniška in poklicna šola Trbovlje</p>
+        </footer>
+    </div>{# /app-main #}
+</div>{# /app-shell #}
+
+<!-- Mobilna navigacija (prijavljeni) -->
 <nav class="mobile-nav">
-    <a href="{% url 'core:home' %}" class="mobile-nav-link {% if request.path == '/' %}active{% endif %}">
+    <a href="{% url 'core:home' %}" class="mobile-nav-link {% if request.path == '/' or '/dashboard' in request.path %}active{% endif %}">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
         <span>Domov</span>
     </a>
     <a href="{% url 'books:catalog' %}" class="mobile-nav-link {% if '/books' in request.path %}active{% endif %}">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
-        <span>Išči</span>
+        <span>Katalog</span>
     </a>
-    {% if user.is_authenticated %}
     <a href="{% url 'reading:home_library' %}" class="mobile-nav-link {% if '/reading/home-library' in request.path %}active{% endif %}">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
         <span>Knjižnica</span>
     </a>
-    <a href="{% url 'accounts:profile_view_me' %}" class="mobile-nav-link">
+    <a href="{% url 'accounts:profile_view_me' %}" class="mobile-nav-link {% if '/accounts/profile' in request.path %}active{% endif %}">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
         <span>Profil</span>
     </a>
@@ -107,13 +219,35 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
         <span>Sporočila</span>
     </a>
-    {% else %}
+</nav>
+
+{% else %}
+    </div>{# /container #}
+</main>{# /main-content #}
+
+<footer class="site-footer">
+    <div class="container">
+        <p>BookMatch &copy; 2026 &middot; Projekt UUI &middot; Srednja tehniška in poklicna šola Trbovlje</p>
+    </div>
+</footer>
+
+<!-- Mobilna navigacija (neprijavljeni) -->
+<nav class="mobile-nav">
+    <a href="{% url 'core:home' %}" class="mobile-nav-link {% if request.path == '/' %}active{% endif %}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>
+        <span>Domov</span>
+    </a>
+    <a href="{% url 'books:catalog' %}" class="mobile-nav-link {% if '/books' in request.path %}active{% endif %}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+        <span>Katalog</span>
+    </a>
     <a href="{% url 'accounts:login' %}" class="mobile-nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
         <span>Prijava</span>
     </a>
-    {% endif %}
 </nav>
+
+{% endif %}
 
 {% block extra_scripts %}{% endblock %}
 </body>
