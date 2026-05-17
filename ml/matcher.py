@@ -62,7 +62,7 @@ class ReaderMatcher:
 
     # --- KONSTANTE / HIPERPARAMETRI ---
     MIN_USER_RATINGS = 3
-    MIN_RATING_FOR_POSITIVE = 3.5
+    MIN_RATING_FOR_POSITIVE = 3.0
 
     K_MIN = 2
     K_MAX = 8

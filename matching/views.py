@@ -26,7 +26,11 @@ def readers_for_you(request):
 
     if user_rating_count >= 3:
         try:
-            from ml.auto_train import maybe_train_matcher
+            from ml.auto_train import maybe_train_matcher, _MATCHER_STAMP
+            # Če ta user nima predlogov, pobriši stamp in prisili ponovni trening
+            has_suggestions = GroupSuggestion.objects.filter(user=user).exists()
+            if not has_suggestions and _MATCHER_STAMP.exists():
+                _MATCHER_STAMP.unlink(missing_ok=True)
             maybe_train_matcher()
         except Exception:
             pass
