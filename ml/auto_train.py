@@ -1,11 +1,15 @@
-"""Samodejni asinhronski trening ML modelov ob spremembah ocen."""
+"""Samodejni trening ML modelov ob spremembah ocen.
+
+Trening se zažene kot ločen podproces, kar je zanesljivo tudi na WSGI strežnikih
+(uWSGI/PythonAnywhere), kjer se daemon niti ubijejo med zahtevami.
+"""
 
 import logging
+import subprocess
+import sys
 import tempfile
-import threading
 import time
 from decimal import Decimal
-from io import StringIO
 from pathlib import Path
 
 from django.db.models import Count
@@ -44,28 +48,20 @@ def _eligible_users_count() -> int:
     )
 
 
-def _run_recommender():
+def _spawn(cmd_name: str):
+    """Zaženi management command kot neodvisen podproces."""
     try:
-        from django.core.management import call_command
-        call_command('train_recommender', stdout=StringIO(), stderr=StringIO())
-        logger.info('auto_train recommender: OK')
+        from django.conf import settings
+        manage_py = str(Path(settings.BASE_DIR) / 'manage.py')
+        subprocess.Popen(
+            [sys.executable, manage_py, cmd_name],
+            cwd=str(settings.BASE_DIR),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        logger.info('auto_train: zagnan %s', cmd_name)
     except Exception:
-        logger.exception('auto_train recommender: napaka')
-    finally:
-        from django.db import connection
-        connection.close()
-
-
-def _run_matcher():
-    try:
-        from django.core.management import call_command
-        call_command('train_matcher', stdout=StringIO(), stderr=StringIO())
-        logger.info('auto_train matcher: OK')
-    except Exception:
-        logger.exception('auto_train matcher: napaka')
-    finally:
-        from django.db import connection
-        connection.close()
+        logger.exception('auto_train %s: napaka pri zagonu', cmd_name)
 
 
 def maybe_train_recommender():
@@ -75,7 +71,7 @@ def maybe_train_recommender():
     if _eligible_users_count() < 1:
         return
     _mark_run(_RECOMMENDER_STAMP)
-    threading.Thread(target=_run_recommender, daemon=True).start()
+    _spawn('train_recommender')
 
 
 def maybe_train_matcher():
@@ -85,4 +81,4 @@ def maybe_train_matcher():
     if _eligible_users_count() < 1:
         return
     _mark_run(_MATCHER_STAMP)
-    threading.Thread(target=_run_matcher, daemon=True).start()
+    _spawn('train_matcher')

@@ -22,9 +22,9 @@
     <div class="info-card">
         <div class="info-card-icon">◆</div>
         <div class="info-card-content">
-            <h3>Priporočila še niso pripravljena</h3>
-            <p>Administrator mora pognati ukaz za treniranje modela:</p>
-            <pre style="background: var(--color-bg-light); padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.875rem;">python manage.py train_recommender</pre>
+            <h3>Priporočila se pripravljajo</h3>
+            <p>Sistem analizira tvoje bralne navade in išče knjige zate. Prosimo, vrni se čez kakšno minuto.</p>
+            <a href="{% url 'books:catalog' %}" class="btn btn-accent">Medtem odpri katalog</a>
         </div>
     </div>
 
@@ -32,7 +32,7 @@
 
     {% if recommendations_outdated %}
         <div class="message info">
-            Dodal si nove ocene. Administrator lahko osveži priporočila z <code>python manage.py train_recommender</code>.
+            Dodal si nove ocene. Priporočila se bodo samodejno osvežila v kratkem.
         </div>
     {% endif %}
 

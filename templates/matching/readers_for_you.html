@@ -53,8 +53,13 @@
                 {% endfor %}
             </div>
         {% else %}
-            <div class="empty-state">
-                Ni predlogov. Administrator mora pognati <code>python manage.py train_matcher</code>.
+            <div class="info-card">
+                <div class="info-card-icon">◆</div>
+                <div class="info-card-content">
+                    <h3>Predlogi skupin se pripravljajo</h3>
+                    <p>Sistem analizira bralne preference vseh uporabnikov. Prosimo, vrni se čez kakšno minuto.</p>
+                    <a href="{% url 'books:catalog' %}" class="btn btn-accent">Medtem odpri katalog</a>
+                </div>
             </div>
         {% endif %}
     </section>
