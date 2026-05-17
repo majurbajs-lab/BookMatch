@@ -4,54 +4,80 @@
 {% block title %}Registracija &ndash; BookMatch{% endblock %}
 
 {% block content %}
-<div class="auth-page">
-    <div class="auth-card">
+<div class="auth-split-page">
 
-        <a href="{% url 'core:home' %}" class="auth-card-logo">
-            <img src="{% static 'images/bookmatch-logo.png' %}" alt="BookMatch" class="auth-logo-img">
-        </a>
-
-        <h1>Ustvari račun</h1>
-        <p class="form-subtitle">Registracija je brezplačna in traja manj kot minuto.</p>
-
-        <form method="post" novalidate>
-            {% csrf_token %}
-
-            {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {% if 'password' in field.html_name %}
-                        <div class="auth-pw-wrap">
-                            {{ field }}
-                            <button type="button" class="auth-pw-btn" onclick="togglePassword('{{ field.id_for_label }}')">Prikaži</button>
-                        </div>
-                    {% else %}
-                        {{ field }}
-                    {% endif %}
-                    {% if field.help_text %}
-                        <span class="helptext">{{ field.help_text|safe }}</span>
-                    {% endif %}
-                    {% if field.errors %}
-                        <ul class="errorlist">
-                            {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-            {% endfor %}
-
-            {% if form.non_field_errors %}
-                <div class="message error">{{ form.non_field_errors }}</div>
-            {% endif %}
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-accent btn-block">Ustvari račun</button>
-            </div>
-        </form>
-
-        <p class="auth-toggle">
-            Že imaš račun? <a href="{% url 'accounts:login' %}">Prijava</a>
-        </p>
+    <!-- Leva stran: branding -->
+    <div class="auth-brand-side">
+        <div class="auth-brand-logo-box">
+            <img src="{% static 'images/bookmatch-logo.png' %}" alt="BookMatch" class="auth-brand-logo-img">
+        </div>
+        <h2>Pridruži se skupnosti.</h2>
+        <p class="auth-brand-desc">Brezplačna registracija traja manj kot minuto. Začni graditi svojo knjižnico in odkrivaj bralce s podobnim okusom.</p>
+        <ul class="auth-brand-list">
+            <li>Osebna knjižnica in bralna evidenca</li>
+            <li>Priporočila z umetno inteligenco</li>
+            <li>Skupnosti bralcev po žanrih</li>
+            <li>Izposoja knjig med bralci</li>
+        </ul>
+        <div class="auth-brand-genres">
+            <span class="auth-brand-genre-tag">Fantazija</span>
+            <span class="auth-brand-genre-tag">Krimi</span>
+            <span class="auth-brand-genre-tag">Romanca</span>
+            <span class="auth-brand-genre-tag">Klasika</span>
+            <span class="auth-brand-genre-tag">Triler</span>
+            <span class="auth-brand-genre-tag">Distopija</span>
+            <span class="auth-brand-genre-tag">Biografija</span>
+            <span class="auth-brand-genre-tag">Poezija</span>
+        </div>
     </div>
+
+    <!-- Desna stran: obrazec -->
+    <div class="auth-form-side">
+        <div class="auth-card auth-card-solo">
+
+            <h1>Ustvari račun</h1>
+            <p class="form-subtitle">Registracija je brezplačna in traja manj kot minuto.</p>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {% if 'password' in field.html_name %}
+                            <div class="auth-pw-wrap">
+                                {{ field }}
+                                <button type="button" class="auth-pw-btn" onclick="togglePassword('{{ field.id_for_label }}')">Prikaži</button>
+                            </div>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                        {% if field.help_text %}
+                            <span class="helptext">{{ field.help_text|safe }}</span>
+                        {% endif %}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                    <div class="message error">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-accent btn-block">Ustvari račun</button>
+                </div>
+            </form>
+
+            <p class="auth-toggle">
+                Že imaš račun? <a href="{% url 'accounts:login' %}">Prijava</a>
+            </p>
+        </div>
+    </div>
+
 </div>
 
 <script>

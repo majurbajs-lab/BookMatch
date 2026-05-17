@@ -1,6 +1,7 @@
 """Samodejni asinhronski trening ML modelov ob spremembah ocen."""
 
 import logging
+import tempfile
 import threading
 import time
 from decimal import Decimal
@@ -14,8 +15,9 @@ logger = logging.getLogger(__name__)
 # Največ enkrat na uro, da ne obremenjujemo baze
 THROTTLE_SECONDS = 3600
 
-_RECOMMENDER_STAMP = Path('/tmp/bm_recommender.txt')
-_MATCHER_STAMP = Path('/tmp/bm_matcher.txt')
+_TMP = Path(tempfile.gettempdir())
+_RECOMMENDER_STAMP = _TMP / 'bm_recommender.txt'
+_MATCHER_STAMP = _TMP / 'bm_matcher.txt'
 
 
 def _last_run(stamp: Path) -> float:
@@ -80,7 +82,7 @@ def maybe_train_matcher():
     """Zaženi train_matcher v ozadju, če so pogoji izpolnjeni."""
     if time.time() - _last_run(_MATCHER_STAMP) < THROTTLE_SECONDS:
         return
-    if _eligible_users_count() < 2:
+    if _eligible_users_count() < 1:
         return
     _mark_run(_MATCHER_STAMP)
     threading.Thread(target=_run_matcher, daemon=True).start()

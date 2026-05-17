@@ -4,57 +4,83 @@
 {% block title %}Prijava &ndash; BookMatch{% endblock %}
 
 {% block content %}
-<div class="auth-page">
-    <div class="auth-card">
+<div class="auth-split-page">
 
-        <a href="{% url 'core:home' %}" class="auth-card-logo">
-            <img src="{% static 'images/bookmatch-logo.png' %}" alt="BookMatch" class="auth-logo-img">
-        </a>
-
-        <h1>Prijava</h1>
-        <p class="form-subtitle">Vpiši svoje podatke za nadaljevanje.</p>
-
-        <form method="post" novalidate>
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label for="{{ form.username.id_for_label }}">Uporabniško ime</label>
-                {{ form.username }}
-                {% if form.username.errors %}
-                    <ul class="errorlist">
-                        {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-
-            <div class="form-group">
-                <label for="{{ form.password.id_for_label }}">Geslo</label>
-                <div class="auth-pw-wrap">
-                    {{ form.password }}
-                    <button type="button" class="auth-pw-btn" onclick="togglePassword()">Prikaži</button>
-                </div>
-                {% if form.password.errors %}
-                    <ul class="errorlist">
-                        {% for error in form.password.errors %}<li>{{ error }}</li>{% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-
-            {% if form.non_field_errors %}
-                <div class="message error">
-                    {% for error in form.non_field_errors %}{{ error }}{% endfor %}
-                </div>
-            {% endif %}
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary btn-block">Prijava</button>
-            </div>
-        </form>
-
-        <p class="auth-toggle">
-            Še nimaš računa? <a href="{% url 'accounts:register' %}">Registracija</a>
-        </p>
+    <!-- Leva stran: branding -->
+    <div class="auth-brand-side">
+        <div class="auth-brand-logo-box">
+            <img src="{% static 'images/bookmatch-logo.png' %}" alt="BookMatch" class="auth-brand-logo-img">
+        </div>
+        <h2>Dobrodošel nazaj!</h2>
+        <p class="auth-brand-desc">Prijavi se in nadaljuj svojo bralno pot. Priporočila, skupnosti in tvoja knjižnica te čakajo.</p>
+        <ul class="auth-brand-list">
+            <li>Osebna knjižnica in bralna evidenca</li>
+            <li>Priporočila z umetno inteligenco</li>
+            <li>Skupnosti bralcev po žanrih</li>
+            <li>Izposoja knjig med bralci</li>
+        </ul>
+        <div class="auth-brand-genres">
+            <span class="auth-brand-genre-tag">Fantazija</span>
+            <span class="auth-brand-genre-tag">Krimi</span>
+            <span class="auth-brand-genre-tag">Romanca</span>
+            <span class="auth-brand-genre-tag">Klasika</span>
+            <span class="auth-brand-genre-tag">Triler</span>
+            <span class="auth-brand-genre-tag">Distopija</span>
+            <span class="auth-brand-genre-tag">Biografija</span>
+            <span class="auth-brand-genre-tag">Poezija</span>
+        </div>
     </div>
+
+    <!-- Desna stran: obrazec -->
+    <div class="auth-form-side">
+        <div class="auth-card auth-card-solo">
+
+            <h1>Prijava</h1>
+            <p class="form-subtitle">Vpiši svoje podatke za nadaljevanje.</p>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Uporabniško ime</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">Geslo</label>
+                    <div class="auth-pw-wrap">
+                        {{ form.password }}
+                        <button type="button" class="auth-pw-btn" onclick="togglePassword()">Prikaži</button>
+                    </div>
+                    {% if form.password.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                {% if form.non_field_errors %}
+                    <div class="message error">
+                        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-block">Prijava</button>
+                </div>
+            </form>
+
+            <p class="auth-toggle">
+                Še nimaš računa? <a href="{% url 'accounts:register' %}">Registracija</a>
+            </p>
+        </div>
+    </div>
+
 </div>
 
 <script>

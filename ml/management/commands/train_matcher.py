@@ -25,10 +25,22 @@ class Command(BaseCommand):
         matcher = ReaderMatcher()
         matcher.fit()
 
+        if len(matcher.user_ids) == 0:
+            self.stdout.write(self.style.WARNING('Ni uporabnikov z dovolj ocenami.'))
+            return
+
+        # Predlogi skupin delujejo z 1+ uporabnikom
+        self.stdout.write('\nRacunam predloge skupin ...')
+        group_stats = matcher.compute_group_suggestions()
+        total_suggestions = sum(group_stats.values())
+        self.stdout.write(self.style.SUCCESS(
+            f'OK Shranjenih predlogov skupin: {total_suggestions}'
+        ))
+
         if len(matcher.user_ids) < 2:
             self.stdout.write(self.style.WARNING(
                 f'\nSamo {len(matcher.user_ids)} uporabnik(ov) ima dovolj ocen.\n'
-                'Za ujemanja potrebujemo vsaj 2 uporabnika.'
+                'Za ujemanja bralcev potrebujemo vsaj 2 uporabnika.'
             ))
             return
 
@@ -36,12 +48,11 @@ class Command(BaseCommand):
             f'\nOK Model naučen:\n'
             f'  Uporabnikov: {len(matcher.user_ids)}\n'
             f'  Zvrsti: {len(matcher.genre_ids)}\n'
-            f'  Število gruč (K): {matcher.k_used}\n'
-            f'  Silhouette score: {matcher.silhouette:.3f}' if matcher.silhouette is not None
-            else f'  Silhouette score: N/A (premalo podatkov)'
+            f'  Število gruč (K): {matcher.k_used}\n' +
+            (f'  Silhouette score: {matcher.silhouette:.3f}' if matcher.silhouette is not None
+             else '  Silhouette score: N/A (premalo podatkov)')
         ))
 
-        # Pokaži opise gruč
         clusters = matcher.describe_clusters()
         if clusters:
             self.stdout.write(self.style.HTTP_INFO('\nOpis gruc:'))
@@ -49,20 +60,11 @@ class Command(BaseCommand):
                 top_str = ', '.join(f'{name} ({score:.0%})' for name, score in info['top_genres'])
                 self.stdout.write(f'  Gruča {cluster_id}: {info["n_users"]} uporabnikov, prevladujejo: {top_str}')
 
-        # Izračun ujemanj uporabnikov
         self.stdout.write('\nRacunam ujemanja bralcev ...')
         match_stats = matcher.compute_user_matches()
         total_matches = sum(match_stats.values())
         self.stdout.write(self.style.SUCCESS(
             f'OK Shranjenih ujemanj: {total_matches}'
-        ))
-
-        # Izračun predlogov skupin
-        self.stdout.write('\nRacunam predloge skupin ...')
-        group_stats = matcher.compute_group_suggestions()
-        total_suggestions = sum(group_stats.values())
-        self.stdout.write(self.style.SUCCESS(
-            f'OK Shranjenih predlogov skupin: {total_suggestions}'
         ))
 
         if options['save']:
