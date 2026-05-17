@@ -607,8 +607,9 @@ code { background: var(--bg-soft); padding: 0.15rem 0.375rem; font-family: monos
 /* ====== AUTH SPLIT (login / register) ====== */
 .auth-split-page { min-height: calc(100vh - 62px - 56px); display: flex; }
 .auth-brand-side { flex: 0 0 420px; background: linear-gradient(160deg, var(--teal-dark) 0%, var(--teal) 100%); display: flex; flex-direction: column; justify-content: center; padding: 3rem 2.5rem; }
-.auth-brand-logo-box { background: var(--bg-app); border-radius: var(--radius-md); padding: 5px 12px; display: inline-flex; align-items: center; margin-bottom: 2rem; }
-.auth-brand-logo-img { height: 44px; width: auto; display: block; mix-blend-mode: multiply; clip-path: inset(8%); }
+.auth-brand-logo-box { background: var(--bg-app); border-radius: var(--radius-md); padding: 6px 14px 6px 10px; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; }
+.auth-brand-logo-img { height: 40px; width: auto; display: block; mix-blend-mode: multiply; clip-path: inset(8%); }
+.auth-brand-wordmark { font-weight: 800; font-size: 1.125rem; color: var(--teal); letter-spacing: -0.3px; white-space: nowrap; }
 .auth-brand-side h2 { color: white; font-size: 1.875rem; margin-bottom: 0.75rem; line-height: 1.2; }
 .auth-brand-desc { color: rgba(255,255,255,0.72); font-size: 0.9375rem; line-height: 1.7; margin-bottom: 2rem; }
 .auth-brand-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
