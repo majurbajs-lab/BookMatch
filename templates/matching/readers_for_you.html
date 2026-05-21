@@ -8,12 +8,23 @@
     <p class="page-subtitle">Skupine in bralci, ki se ujemajo s tvojim okusom, izbrani s pomočjo strojnega učenja.</p>
 </div>
 
+{% if last_updated %}
+    <p class="muted-text" style="margin-bottom: 1rem;">
+        Nazadnje osveženo: <strong>{{ last_updated|date:"d.m.Y" }} ob {{ last_updated|time:"H:i" }}</strong>
+        &nbsp;·&nbsp; Redno se osvežuje.
+    </p>
+{% else %}
+    <p class="muted-text" style="margin-bottom: 1rem;">
+        Priporočila bodo kmalu na voljo.
+    </p>
+{% endif %}
+
 {% if needs_more_ratings %}
     <div class="info-card">
         <div class="info-card-icon">◆</div>
         <div class="info-card-content">
-            <h3>Potrebujemo še malo podatkov</h3>
-            <p>Da ti lahko predlagamo skupine in bralce, potrebujemo vsaj <strong>3 ocene</strong>. Trenutno imaš <strong>{{ user_rating_count }}</strong>.</p>
+            <h3>Najprej oceni vsaj 3 knjige</h3>
+            <p>Da ti lahko predlagamo bralce in skupine, potrebujemo vsaj <strong>3 ocene</strong>. Trenutno imaš <strong>{{ user_rating_count }}</strong>.</p>
             <a href="{% url 'books:catalog' %}" class="btn btn-accent">Odpri katalog</a>
         </div>
     </div>
@@ -56,9 +67,9 @@
             <div class="info-card">
                 <div class="info-card-icon">◆</div>
                 <div class="info-card-content">
-                    <h3>Predlogi skupin se pripravljajo</h3>
-                    <p>Sistem analizira bralne preference vseh uporabnikov. Prosimo, vrni se čez kakšno minuto.</p>
-                    <a href="{% url 'books:catalog' %}" class="btn btn-accent">Medtem odpri katalog</a>
+                    <h3>Predlogi skupin še niso bili izračunani</h3>
+                    <p>Imaš dovolj ocen – predlogi bodo kmalu na voljo.</p>
+                    <a href="{% url 'groups:list' %}" class="btn btn-accent">Medtem poglej vse skupine</a>
                 </div>
             </div>
         {% endif %}

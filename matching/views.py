@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from core.models import DailyJobLog
 from reading.models import Rating
 
 from .models import GroupSuggestion, UserMatch
@@ -14,26 +15,28 @@ from .models import GroupSuggestion, UserMatch
 
 @login_required
 def readers_for_you(request):
-    """Stran »Bralci zate« – prikaže predlagane skupine in uporabnike."""
+    """Stran »Bralci zate« – prikaže predlagane skupine in uporabnike iz dnevnega joba."""
     user = request.user
 
-    # Preveri, ali uporabnik sodeluje v sistemu ujemanj
     if not user.profile.show_in_matches:
         return render(request, 'matching/opt_out.html')
 
     user_rating_count = Rating.objects.filter(user=user).count()
     needs_more_ratings = user_rating_count < 3
 
-    if user_rating_count >= 3:
-        try:
-            from ml.auto_train import maybe_train_matcher, _MATCHER_STAMP
-            # Če ta user nima predlogov, pobriši stamp in prisili ponovni trening
-            has_suggestions = GroupSuggestion.objects.filter(user=user).exists()
-            if not has_suggestions and _MATCHER_STAMP.exists():
-                _MATCHER_STAMP.unlink(missing_ok=True)
-            maybe_train_matcher()
-        except Exception:
-            pass
+    # Timestamp zadnjega zagona
+    try:
+        job_log = DailyJobLog.objects.get(job_name=DailyJobLog.JOB_MATCHING)
+        last_updated = job_log.last_run_at
+    except DailyJobLog.DoesNotExist:
+        last_updated = None
+
+    if needs_more_ratings:
+        return render(request, 'matching/readers_for_you.html', {
+            'needs_more_ratings': True,
+            'user_rating_count': user_rating_count,
+            'last_updated': last_updated,
+        })
 
     # Predlagane skupine
     group_suggestions = (
@@ -41,10 +44,10 @@ def readers_for_you(request):
         .filter(user=user, is_dismissed=False)
         .select_related('group')
         .prefetch_related('group__genres', 'group__memberships')
-        .order_by('-match_score')[:12]
+        .order_by('-match_score')[:5]
     )
 
-    # Izključi skupine, ki so že članove
+    # Izključi skupine kjer je že član
     from groups.models import GroupMembership
     member_group_ids = set(
         GroupMembership.objects.filter(user=user, is_approved=True)
@@ -55,19 +58,14 @@ def readers_for_you(request):
     # Ujemanja z drugimi bralci
     user_matches = (
         UserMatch.objects
-        .filter(
-            Q(user_a=user) | Q(user_b=user),
-            is_dismissed=False,
-        )
+        .filter(Q(user_a=user) | Q(user_b=user), is_dismissed=False)
         .select_related('user_a__profile', 'user_b__profile')
-        .order_by('-similarity_score')[:12]
+        .order_by('-similarity_score')[:5]
     )
 
-    # Pripravi podatke (druga oseba v paru)
     matches_for_display = []
     for m in user_matches:
         other = m.user_b if m.user_a == user else m.user_a
-        # Preveri, ali je drug uporabnik dovolil ujemanja
         if not other.profile.show_in_matches:
             continue
         matches_for_display.append({
@@ -79,8 +77,9 @@ def readers_for_you(request):
     return render(request, 'matching/readers_for_you.html', {
         'group_suggestions': group_suggestions,
         'matches_for_display': matches_for_display,
-        'needs_more_ratings': needs_more_ratings,
+        'needs_more_ratings': False,
         'user_rating_count': user_rating_count,
+        'last_updated': last_updated,
     })
 
 

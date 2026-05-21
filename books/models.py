@@ -190,3 +190,29 @@ class Book(models.Model):
         self.average_rating = stats['avg'] or 0.0
         self.ratings_count = stats['count'] or 0
         self.save(update_fields=['average_rating', 'ratings_count'])
+
+
+class TopBook(models.Model):
+    """Top 10 knjig po povprečni oceni – osvežuje se vsak dan ob 12:00."""
+
+    rank = models.PositiveSmallIntegerField(verbose_name='Mesto', unique=True)
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name='top_entries',
+        verbose_name='Knjiga',
+    )
+    average_rating = models.DecimalField(
+        max_digits=3,
+        decimal_places=2,
+        verbose_name='Povprečna ocena ob izračunu',
+    )
+    ratings_count = models.IntegerField(verbose_name='Število ocen ob izračunu')
+
+    class Meta:
+        verbose_name = 'Top knjiga'
+        verbose_name_plural = 'Top knjige'
+        ordering = ['rank']
+
+    def __str__(self):
+        return f'#{self.rank} {self.book.title} ({self.average_rating})'

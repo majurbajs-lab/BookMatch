@@ -71,9 +71,9 @@ if _DB_HOST:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': config('DB_NAME', default='bookmatchdjango'),
+            'NAME': config('DB_NAME', default='bookmatchdjango2'),
             'USER': config('DB_USER', default='root'),
-            'PASSWORD': config('DB_PASSWORD', default=''),
+            'PASSWORD': config('DB_PASSWORD', default=' '),
             'HOST': _DB_HOST,
             'PORT': config('DB_PORT', default='3306'),
             'OPTIONS': {

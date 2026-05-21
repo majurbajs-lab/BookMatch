@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from books.models import TopBook
+from core.models import DailyJobLog
 from reading.models import Rating
 
 from .models import Recommendation
@@ -13,45 +15,47 @@ from .models import Recommendation
 
 @login_required
 def for_you(request):
-    """Stran »Za vas« – prikaže personalizirana priporočila."""
+    """Stran »Za vas« – prikaže personalizirana priporočila iz dnevnega joba."""
     user_rating_count = Rating.objects.filter(user=request.user).count()
+    needs_more_ratings = user_rating_count < 3
 
-    if user_rating_count >= 3:
-        try:
-            from ml.auto_train import maybe_train_recommender
-            maybe_train_recommender()
-        except Exception:
-            pass
+    # Timestamp zadnjega zagona
+    try:
+        job_log = DailyJobLog.objects.get(job_name=DailyJobLog.JOB_RECOMMENDATIONS)
+        last_updated = job_log.last_run_at
+    except DailyJobLog.DoesNotExist:
+        last_updated = None
+
+    top_books = (
+        TopBook.objects
+        .select_related('book')
+        .prefetch_related('book__authors', 'book__genres')
+        .order_by('rank')
+    )
+
+    if needs_more_ratings:
+        return render(request, 'recommendations/for_you.html', {
+            'needs_more_ratings': True,
+            'user_rating_count': user_rating_count,
+            'top_books': top_books,
+            'last_updated': last_updated,
+        })
 
     recommendations = (
         Recommendation.objects
         .filter(user=request.user, is_dismissed=False)
         .select_related('book')
         .prefetch_related('book__authors', 'book__genres')
-        .order_by('-score')[:30]
+        .order_by('-score')[:10]
     )
 
-    # Ali uporabnik potrebuje več ocen?
-    needs_more_ratings = user_rating_count < 3
-
-    # Ali so priporočila zastarela? (ocenjeno po tem, da je zadnja ocena novejša od najnovejše
-    # posodobitve priporočil)
-    last_rec_update = recommendations.first().updated_at if recommendations.exists() else None
-    last_rating_update = (
-        Rating.objects.filter(user=request.user).order_by('-updated_at').first()
-    )
-    recommendations_outdated = (
-        last_rec_update and last_rating_update
-        and last_rating_update.updated_at > last_rec_update
-    )
-
-    context = {
+    return render(request, 'recommendations/for_you.html', {
         'recommendations': recommendations,
         'user_rating_count': user_rating_count,
-        'needs_more_ratings': needs_more_ratings,
-        'recommendations_outdated': recommendations_outdated,
-    }
-    return render(request, 'recommendations/for_you.html', context)
+        'needs_more_ratings': False,
+        'top_books': top_books,
+        'last_updated': last_updated,
+    })
 
 
 @login_required
@@ -62,7 +66,6 @@ def dismiss(request, recommendation_id):
     rec.is_dismissed = True
     rec.save(update_fields=['is_dismissed'])
 
-    # AJAX odziv
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse({'success': True})
 

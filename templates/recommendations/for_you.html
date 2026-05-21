@@ -8,6 +8,17 @@
     <p class="page-subtitle">Knjige, ki bi ti lahko bile všeč, izbrane s pomočjo strojnega učenja.</p>
 </div>
 
+{% if last_updated %}
+    <p class="muted-text" style="margin-bottom: 1rem;">
+        Nazadnje osveženo: <strong>{{ last_updated|date:"d.m.Y" }} ob {{ last_updated|time:"H:i" }}</strong>
+        &nbsp;·&nbsp; Redno se osvežuje.
+    </p>
+{% else %}
+    <p class="muted-text" style="margin-bottom: 1rem;">
+        Priporočila bodo kmalu na voljo.
+    </p>
+{% endif %}
+
 {% if needs_more_ratings %}
     <div class="info-card">
         <div class="info-card-icon">◆</div>
@@ -22,21 +33,13 @@
     <div class="info-card">
         <div class="info-card-icon">◆</div>
         <div class="info-card-content">
-            <h3>Priporočila se pripravljajo</h3>
-            <p>Sistem analizira tvoje bralne navade in išče knjige zate. Prosimo, vrni se čez kakšno minuto.</p>
+            <h3>Priporočila še niso bila izračunana</h3>
+            <p>Imaš dovolj ocen – tvoja priporočila bodo kmalu na voljo.</p>
             <a href="{% url 'books:catalog' %}" class="btn btn-accent">Medtem odpri katalog</a>
         </div>
     </div>
 
 {% else %}
-
-    {% if recommendations_outdated %}
-        <div class="message info">
-            Dodal si nove ocene. Priporočila se bodo samodejno osvežila v kratkem.
-        </div>
-    {% endif %}
-
-    {# Isti stil kot katalog: book-grid z book-card #}
     <div class="book-grid">
         {% for rec in recommendations %}
             <a href="{% url 'books:detail' rec.book.id %}" class="book-card with-match-badge">
@@ -76,4 +79,39 @@
     </div>
 
 {% endif %}
+
+{% if top_books %}
+    <section style="margin-top: 3rem;">
+        <h2>Najboljše ocenjene knjige</h2>
+        <p class="muted-text" style="margin-bottom: 1rem;">Top 10 knjig po povprečni oceni vseh bralcev.</p>
+        <div class="book-grid">
+            {% for entry in top_books %}
+                <a href="{% url 'books:detail' entry.book.id %}" class="book-card with-match-badge">
+                    <span class="card-match-badge" title="Mesto na lestvici">#{{ entry.rank }}</span>
+                    {% if entry.book.cover_image %}
+                        <img src="{{ entry.book.cover_image.url }}" alt="{{ entry.book.title }}" class="book-cover">
+                    {% else %}
+                        {% with g=entry.book.genres.all|first %}
+                        <div class="book-cover-placeholder{% if g %} cover-genre-{{ g.slug }}{% endif %}">{{ entry.book.title }}</div>
+                        {% endwith %}
+                    {% endif %}
+                    <div class="book-card-info">
+                        <div class="book-card-title">{{ entry.book.title }}</div>
+                        <div class="book-card-author">{{ entry.book.authors_list }}</div>
+                        <div class="book-card-rating">
+                            <div class="star-rating">
+                                <span class="stars-wrapper">
+                                    <span class="stars-bg">★★★★★</span>
+                                    <span class="stars-fg" style="width:{% widthratio entry.average_rating 5 100 %}%">★★★★★</span>
+                                </span>
+                            </div>
+                            <span class="muted-text">({{ entry.ratings_count }})</span>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
 {% endblock %}
